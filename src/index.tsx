@@ -3,14 +3,20 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Auth0Provider } from "@auth0/auth0-react";
+import Auth0ProviderWithHistory from './auth0Provider';
+import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <Auth0ProviderWithHistory>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Auth0ProviderWithHistory>
+
 );
 
 // If you want to start measuring performance in your app, pass a function
