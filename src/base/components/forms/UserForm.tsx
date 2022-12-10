@@ -22,9 +22,13 @@ type OptionType = {
     value: string;
 }
 
+type PropsType = {
+    afterUpdate : Function
+}
+
 const baseApiURL = `https://dev-aq0ru8q8.us.auth0.com/api/v2`;
 
-export default function UserForm() {
+export default function UserForm(props: PropsType) {
     const { user, getAccessTokenSilently } = useAuth0();
     const [formEmail, setFormEmail] = useState(user?.email || "");
     const [skills, setSkills] = useState<OptionType[]>();
@@ -92,9 +96,10 @@ export default function UserForm() {
             then((res) => {
                 console.log(res);
                 toast.success('Successfully Updated.')
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 1000);
+                props.afterUpdate();
             })
             .catch((err) => {
                 toast.error(err.message);

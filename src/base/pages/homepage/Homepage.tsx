@@ -10,33 +10,40 @@ export default function Homepage() {
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
     const [userMetadata, setUserMetadata] = useState<any>(null);
     const [token,setToken] = useState<string>("");
-    useEffect(() => {
-        const getUserMetadata = async () => {
-          const domain = "dev-aq0ru8q8.us.auth0.com";
-      
-          try {
-            const accessToken = await getAccessTokenSilently({
-              audience: `https://${domain}/api/v2/`,
-              scope: "read:current_user",
-            });
 
-            setToken(accessToken);
-            const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
-      
-            const metadataResponse = await fetch(userDetailsByIdUrl, {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            });
-      
-            const { user_metadata } = await metadataResponse.json();
-      
-            setUserMetadata(user_metadata);
-            localStorage.setItem('user_data',JSON.stringify(user_metadata));
-          } catch (e:any) {
-            console.log(e.message);
-          }
-        };
+    const getUserMetadata = async () => {
+      const domain = "dev-aq0ru8q8.us.auth0.com";
+  
+      try {
+        const accessToken = await getAccessTokenSilently({
+          audience: `https://${domain}/api/v2/`,
+          scope: "read:current_user",
+        });
+
+        setToken(accessToken);
+        const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
+  
+        const metadataResponse = await fetch(userDetailsByIdUrl, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+  
+        const { user_metadata } = await metadataResponse.json();
+  
+        setUserMetadata(user_metadata);
+        localStorage.setItem('user_data',JSON.stringify(user_metadata));
+      } catch (e:any) {
+        console.log(e.message);
+      }
+    };
+
+    function updateDetails()
+    {
+      getUserMetadata();
+    }
+    
+    useEffect(() => {
         getUserMetadata();
       }, [getAccessTokenSilently, user?.sub]);
     if (!user || !isAuthenticated) return <>None</>
@@ -52,7 +59,7 @@ export default function Homepage() {
                     </Box>
                 </Container>
                 <Container sx={{ my: 2 }}>
-                    <UserForm/>
+                    <UserForm afterUpdate={updateDetails}/>
                 </Container>
             </Container>
         </div>
