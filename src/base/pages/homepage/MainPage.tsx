@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
 import AdminPage from './AdminPage';
 import Userpage from './UserPage';
@@ -33,7 +33,7 @@ export default function MainPage() {
             setUserMetadata(user_metadata);
             setRole(app_metadata?.roles[0] || 'user');
             localStorage.setItem('user_data',JSON.stringify(user_metadata));
-            
+
           } catch (e:any) {
             console.log(e.message);
           }

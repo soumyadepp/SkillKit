@@ -2,7 +2,7 @@ import { User } from '@auth0/auth0-react'
 import { Box, Container } from '@mui/system'
 import { Toaster } from 'react-hot-toast'
 import UserDetails from '../../components/cards/UserDetails'
-import UserPanel from '../../components/panels/UserPanel'
+import CommonPanel from '../../components/panels/CommonPanel'
 
 type UserPagePropType = {
     user: User;
@@ -17,13 +17,13 @@ export default function Userpage(props:UserPagePropType) {
     return (
         <div>
             <Toaster />
-            <Container sx={{ display: 'flex', alignItems: 'start', justifyContent: 'space-evenly' }}>
+            <Container sx={{ my:10,display: 'flex', alignItems: 'start', justifyContent: 'space-evenly' }}>
                 <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
                     <Box sx={{ my: 2, display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
                         <UserDetails nickname={user?.nickname} username={user?.name} name={user?.family_name} email={user?.email} picture={user?.picture} verified={user?.email_verified} />
                     </Box>
                     <Box sx={{ my: 2 }}>
-                        <UserPanel token={token} skills={userMetadata?.skills || []} />
+                        <CommonPanel token={token} skills={userMetadata?.skills || []} />
                     </Box>
                 </Container>
             </Container>

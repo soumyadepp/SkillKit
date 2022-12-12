@@ -1,13 +1,13 @@
-import { WorkOutlineRounded } from '@mui/icons-material'
 import { Button, Container, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useState } from 'react';
 import homeImage from '../../assets/homepageImage.png';
+import StaticStepper from '../stepper/StaticStepper';
 
 export default function LandingPage() {
     const [email, setEmail] = useState("");
     return (
-        <Container maxWidth="lg" sx={{ minHeight: '90vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Container maxWidth="lg" sx={{ my:10, minHeight: '90vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Container maxWidth="lg" sx={{ minHeight: '90vh', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box textAlign="left" sx={{ flex: 0.95 }}>
                     <Typography variant="h2" fontWeight={600}>
@@ -26,6 +26,10 @@ export default function LandingPage() {
                 <Box sx={{ ml: 5, flex: 1 }}>
                     <img src={homeImage} alt="home image" style={{ height: '70vh' }} />
                 </Box>
+            </Container>
+            <Container maxWidth="lg" sx={{my:2,minHeight:'90vh',display:'flex',flexDirection:'column'}}>
+                <Typography variant="h2">Admin-Flow</Typography>
+                <StaticStepper/>
             </Container>
         </Container>
     )

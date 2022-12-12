@@ -76,7 +76,7 @@ function ResponsiveAppBar() {
         console.log(user);
     }
     return (
-        <AppBar position="static" color="primary">
+        <AppBar position="fixed" color="primary">
             <Container maxWidth="xl">
                 <Toolbar disableGutters sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Container sx={{display:'flex',alignItems:'center'}}>

@@ -14,7 +14,7 @@ type PanelPropType = {
   token:string;
 }
 
-export default function UserPanel(props:PanelPropType) {
+export default function CommonPanel(props:PanelPropType) {
   const {skills} = props || [];
   const {token} = props;
   const [value, setValue] = React.useState('1');
