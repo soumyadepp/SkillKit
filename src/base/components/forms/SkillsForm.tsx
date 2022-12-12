@@ -22,6 +22,7 @@ type OptionType = {
     value: string;
 }
 
+
 const baseApiURL = `https://dev-aq0ru8q8.us.auth0.com/api/v2`;
 
 export default function UserForm() {
@@ -95,9 +96,6 @@ export default function UserForm() {
         axios.request(patchRequestOptions).then((res) => {
                 console.log(res);
                 toast.success('Successfully Updated.')
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
             })
             .catch((err) => {
                 toast.error(err.message);

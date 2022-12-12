@@ -13,7 +13,7 @@ import ComponentLoader from '../loaders/ComponentLoader';
 import { useState } from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import { useSpring, animated } from 'react-spring';
-import UserForm from '../forms/SkillsForm';
+import SkillsForm from '../forms/SkillsForm';
 import React from 'react';
 import { BackpackRounded } from '@mui/icons-material';
 
@@ -113,7 +113,7 @@ export default function SkillList(props: ListPropType) {
         >
           <Fade in={open}>
             <Box sx={style}>
-              <UserForm />
+              <SkillsForm/>
             </Box>
           </Fade>
         </Modal>
