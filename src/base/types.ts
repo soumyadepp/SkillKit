@@ -37,3 +37,35 @@ export type User = {
     family_name?:string;
 }
 
+export type UserAddress = {
+    street?: string;
+    line1?: string;
+    line2?: string;
+    city?:string;
+}
+
+export type TechType = {
+    _id?:string;
+    id: Number;
+    name:string;
+    image:string;
+}
+
+type ProjectBlockType = {
+    frontend:TechType;
+    backend:TechType[];
+    databases: TechType[];
+}
+
+export type Project = {
+    _id:string;
+    name:string;
+    description?:string;
+    version:string;
+    assignedUsers:string[];
+    stackUsed: ProjectBlockType;
+    createdBy:string;
+    deadline:string;
+    createdAt:string;
+    updatedAt:string;
+}

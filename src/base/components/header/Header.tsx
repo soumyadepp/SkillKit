@@ -30,7 +30,7 @@ const HeaderStyles = {
 };
 
 function ResponsiveAppBar() {
-    const {user,isLoading,loginWithRedirect,logout} = useAuth0();
+    const { user, isLoading, loginWithRedirect, logout } = useAuth0();
     const pages: PageType[] = [
         {
             name: 'Projects',
@@ -72,32 +72,32 @@ function ResponsiveAppBar() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-    if(user){
+    if (user) {
         console.log(user);
     }
     return (
-        <AppBar position="static">
+        <AppBar position="static" color="primary">
             <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="/"
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        SkillKit
-                    </Typography>
-
+                <Toolbar disableGutters sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Container sx={{display:'flex',alignItems:'center'}}>
+                        <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                        <Typography
+                            variant="h4"
+                            noWrap
+                            component="a"
+                            href="/"
+                            sx={{
+                                ml: 2,
+                                display: { xs: 'none', md: 'flex' },
+                                fontWeight: 600,
+                                letterSpacing: '.2rem',
+                                color: 'inherit',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            SkillKit
+                        </Typography>
+                    </Container>
                     {!isLoading && user && <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
@@ -149,7 +149,7 @@ function ResponsiveAppBar() {
                             letterSpacing: '.2rem',
                             color: 'inherit',
                             textDecoration: 'none',
-                            fontSize:'4vmin'
+                            fontSize: '4vmin'
                         }}
                     >
                         SkillKit
@@ -159,20 +159,19 @@ function ResponsiveAppBar() {
                             <Button
                                 key={page.name}
                                 onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{ my: 2, color: 'white', display: 'block',mx:1}}
                             >
                                 {page.name}
                             </Button>
                         ))}
                     </Box>}
-                    {!isLoading && !user && <Box sx={{flexGrow:0}}>
-                        <Button onClick={() => loginWithRedirect()} sx={{my:2,color:'white',display:'block'}}>Login</Button>
+                    {!isLoading && !user && <Box sx={{ flexGrow: 0 }}>
+                        <Button onClick={() => loginWithRedirect()} sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button>
                     </Box>}
-                    {!isLoading && user && <Box sx={{ display:'flex',flexGrow: 0 }}>
-                        <Typography textAlign="center" sx={{fontSize:'2vmin',mx:2,my:2}}>{user?.nickname}</Typography>
+                    {!isLoading && user && <Box sx={{ display: 'flex', flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src={user.picture} />
+                                <Avatar alt="Remy Sharp" src={user?.picture} />
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -193,10 +192,10 @@ function ResponsiveAppBar() {
                         >
                             {settings.map((setting) => (
                                 setting?.name !== 'Logout' ? <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-                                <Typography textAlign="center">{setting.name}</Typography>
-                            </MenuItem> : <MenuItem key={setting.name} onClick = {()=>logout()}>
-                                {setting.name}
-                            </MenuItem>
+                                    <Typography textAlign="center">{setting.name}</Typography>
+                                </MenuItem> : <MenuItem key={setting.name} onClick={() => logout()}>
+                                    {setting.name}
+                                </MenuItem>
                             ))}
                         </Menu>
                     </Box>}

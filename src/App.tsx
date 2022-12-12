@@ -1,24 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { useAuth0 } from '@auth0/auth0-react';
 import Header from './base/components/header/Header';
 import FullScreenLoader from './base/components/loaders/FullScreenLoader';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Homepage from './base/pages/homepage/Homepage';
+import MainPage from './base/pages/homepage/MainPage';
+import { ThemeProvider, createTheme } from '@mui/material';
+
+const THEME = createTheme({
+  typography: {
+   "fontFamily": `"Poppins",sans-serif`,
+   "fontSize": 14,
+   "fontWeightLight": 300,
+   "fontWeightRegular": 400,
+   "fontWeightMedium": 500
+  }
+});
+
+
 function App() {
   const { isLoading } = useAuth0();
-  if (isLoading) return <FullScreenLoader />
-
+  if (isLoading) return <FullScreenLoader text='Please wait a moment...' />
   return (
-    <Router>
-      <div className="App">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Homepage/>} />
-        </Routes>
-      </div>
-    </Router>
+    <ThemeProvider theme={THEME}>
+      <Router>
+        <div className="App">
+          <Header />
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+          </Routes>
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 

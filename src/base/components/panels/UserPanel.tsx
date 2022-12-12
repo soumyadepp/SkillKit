@@ -6,23 +6,25 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { SkillType } from '../../types';
 import SkillList from '../lists/SkillList';
+import ProjectsList from '../lists/ProjectsList';
 
 type PanelPropType = {
   skills: SkillType[];
   projects?: any;
+  token:string;
 }
 
 export default function UserPanel(props:PanelPropType) {
-  const {skills,projects} = props;
-  console.log(skills);
+  const {skills} = props || [];
+  const {token} = props;
   const [value, setValue] = React.useState('1');
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
   return (
-    <Box sx={{ width: '100%', typography: 'body1' }}>
+    <Box sx={{ width: '100%', typography: 'body1',boxShadow:'0px 0px 4px lightgray'}}>
       <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="Skills" value="1" />
             <Tab label="Projects" value="2" />
@@ -32,7 +34,9 @@ export default function UserPanel(props:PanelPropType) {
         <TabPanel value="1">
           <SkillList skills={skills}/>
         </TabPanel>
-        <TabPanel value="2">Item Two</TabPanel>
+        <TabPanel value="2">
+          <ProjectsList token={token}/>
+        </TabPanel>
         <TabPanel value="3">Item Three</TabPanel>
       </TabContext>
     </Box>
