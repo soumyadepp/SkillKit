@@ -96,6 +96,9 @@ export default function UserForm() {
         axios.request(patchRequestOptions).then((res) => {
                 console.log(res);
                 toast.success('Successfully Updated.')
+                setTimeout(() => {
+                    window.location.reload();
+                },1500);
             })
             .catch((err) => {
                 toast.error(err.message);

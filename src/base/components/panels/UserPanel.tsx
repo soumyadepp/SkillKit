@@ -26,9 +26,8 @@ export default function UserPanel(props:PanelPropType) {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Skills" value="1" />
+            <Tab label="My Skills" value="1" />
             <Tab label="Projects" value="2" />
-            <Tab label="Efficiency" value="3" />
           </TabList>
         </Box>
         <TabPanel value="1">
@@ -37,7 +36,6 @@ export default function UserPanel(props:PanelPropType) {
         <TabPanel value="2">
           <ProjectsList token={token}/>
         </TabPanel>
-        <TabPanel value="3">Item Three</TabPanel>
       </TabContext>
     </Box>
   );

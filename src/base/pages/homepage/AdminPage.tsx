@@ -4,6 +4,8 @@ import UserDetails from '../../components/cards/UserDetails'
 import { User } from '../../types'
 import AdminPanel from '../../components/panels/AdminPanel'
 import axios from 'axios'
+import { Toaster } from 'react-hot-toast'
+import UserPanel from '../../components/panels/UserPanel'
 
 type AdminPagePropsType = {
   user: User;
@@ -28,10 +30,14 @@ export default function AdminPage(props: AdminPagePropsType) {
   },[])
   return (
     <React.Fragment>
+      <Toaster/>
       <Container sx={{ display: 'flex', alignItems: 'start' }}>
         <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
           <Box sx={{ my: 2, display: 'flex', alignItems: 'start', justifyContent: 'start' }}>
             <UserDetails isAdmin={true} nickname={user?.nickname} username={user?.name} name={user?.family_name} email={user?.email} picture={user?.picture} verified={user?.email_verified} />
+          </Box>
+          <Box sx={{ my: 2, display: 'flex', alignItems: 'start', justifyContent: 'start' }}>
+            <UserPanel token={token} skills={userMetadata.skills}/>
           </Box>
         </Container>
         <AdminPanel token={token}/>
