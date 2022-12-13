@@ -13,6 +13,7 @@ import axios from 'axios';
 import { Project } from '../../types';
 import toast from 'react-hot-toast';
 import Edit from '@mui/icons-material/Edit';
+import UserList from '../lists/UserList';
 
 type AdminPanelPropType = {
   token: string;
@@ -65,7 +66,7 @@ colorMap.set('pending',['gray','#fff']);
 colorMap.set('design',['pink','#fff']);
 colorMap.set('development',['#1976d2','#fff']);
 colorMap.set('alpha_testing',['#d10023','#fff']);
-colorMap.set('beta_testing',['#000d1a','#fff']);
+colorMap.set('beta_testing',['brown','#fff']);
 colorMap.set('pre_release',['violet','#fff']);
 colorMap.set('staging',['orange','#fff']);
 colorMap.set('production',['#000','#fff']);
@@ -160,7 +161,7 @@ export default function AdminPanel(props: AdminPanelPropType) {
               </Tooltip>
             </AccordionSummary>
             <AccordionDetails sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-              <Typography fontSize={13} fontWeight={400} sx={{ color: '#1976d2' }}>
+              <Typography fontSize={13} fontWeight={400} sx={{ my:2,color: '#1976d2' }}>
                 *The projects you close will be marked as done. But the projects you delete cannot be recovered in the futre.
               </Typography>
               {projects && projects.map((project,index) => {
@@ -215,6 +216,7 @@ export default function AdminPanel(props: AdminPanelPropType) {
           </Accordion>
         </TabPanel>
         <TabPanel value="2">
+          <UserList/>
         </TabPanel>
         <TabPanel value="3">Item Three</TabPanel>
       </TabContext>

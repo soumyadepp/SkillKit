@@ -26,15 +26,15 @@ export default function CommonPanel(props:PanelPropType) {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="My Skills" value="1" />
-            <Tab label="Projects" value="2" />
+          <Tab label="Projects" value="1" />
+            <Tab label="My Skills" value="2" />
           </TabList>
         </Box>
         <TabPanel value="1">
-          <SkillList skills={skills}/>
+          <ProjectsList token={token}/>
         </TabPanel>
         <TabPanel value="2">
-          <ProjectsList token={token}/>
+          <SkillList skills={skills}/>
         </TabPanel>
       </TabContext>
     </Box>

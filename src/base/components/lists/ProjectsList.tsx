@@ -56,11 +56,9 @@ type ProjectsListPropType = {
 }
 
 export default function ProjectsList(props: ProjectsListPropType) {
-    const { token } = props;
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const {token} = props;
     const [expanded, setExpanded] = useState<string | false>(false);
+    const [isLoading,setIsLoading] = useState<boolean>(false);
     const handleExpandedChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
@@ -68,6 +66,7 @@ export default function ProjectsList(props: ProjectsListPropType) {
     const [projects, setProjects] = useState<Project[]>([]);
 
     useEffect(() => {
+        setIsLoading(true);
         axios.get('http://localhost:4000/api/v1/projects')
             .then((res) => {
                 setProjects(res.data?.data);
@@ -75,12 +74,9 @@ export default function ProjectsList(props: ProjectsListPropType) {
             .catch(err => {
                 toast.error(err.message);
             })
-    }, []);
-
-    useEffect(() => {
-
-    }, [projects])
-
+        setIsLoading(false);
+    },[token]);
+    if(isLoading) return <ComponentLoader/>
     return (
         <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             <nav aria-label="skills list">
