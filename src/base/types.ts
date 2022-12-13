@@ -61,6 +61,7 @@ export type Project = {
     _id:string;
     name:string;
     description?:string;
+    status?:string;
     version:string;
     assignedUsers:string[];
     stackUsed: ProjectBlockType;

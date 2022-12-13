@@ -19,14 +19,12 @@ const theme = createTheme();
 
 
 const baseApiURL = `http://localhost:4000/api/v1`;
-type PropType = {
-    projects: Project[];
-}
 
 
-export default function AssignUsersForm(props: PropType) {
+
+export default function AssignUsersForm() {
     const { user } = useAuth0();
-    const { projects } = props;
+    const [projects,setProjects] = useState<Project[]>([]);
     const [users, setUsers] = useState<any>();
     const [selectedUsers, setSelectedUsers] = useState<any>([]);
     const [project, setProject] = useState<Project>();
@@ -37,9 +35,18 @@ export default function AssignUsersForm(props: PropType) {
     const handleRemove = (selectedList: any, selectedItem: any) => {
         setSelectedUsers(selectedList);
     }
-    useEffect(() => {
-        setIsLoading(true);
-        axios.get(`http://localhost:4000/api/v1/users`)
+    const fetchProjects = () => {
+        axios.get(`${baseApiURL}/projects`)
+        .then((res) => {
+            setProjects(res.data?.data);
+        })
+        .catch(err => {
+            console.log(err);
+            toast.error(err.message);
+        })
+    }
+    const fetchUsers = () => {
+        axios.get(`${baseApiURL}/users`)
             .then((res) => {
                 setUsers(res.data?.data);
             })
@@ -47,6 +54,11 @@ export default function AssignUsersForm(props: PropType) {
                 console.log(err);
                 toast.error(err.message);
             })
+    }
+    useEffect(() => {
+        setIsLoading(true);
+        fetchProjects();
+        fetchUsers();
         setIsLoading(false);
     }, [user]);
 
@@ -73,7 +85,7 @@ export default function AssignUsersForm(props: PropType) {
                 toast.success('Updated successfully');
                 setTimeout(() => {
                     window.location.reload();
-                }, 1500);
+                },1500);
             })
             .catch(err => {
                 console.log(err);
@@ -124,7 +136,7 @@ export default function AssignUsersForm(props: PropType) {
                                     <Typography variant="h6">
                                         {project.assignedUsers.length === 1 ? 'User' : 'Users'} assigned to {project.name}
                                     </Typography>
-                                    <Chip label={`Due on ${project.deadline}`} sx={{fontSize:'12px',color: '#d10023',fontWeight:'500', border: '1px solid #d10023', background: '#ffff' }} />
+                                    <Chip label={`Due on ${project.deadline}`} sx={{ml:2,fontSize:'12px',color: '#d10023',fontWeight:'500', border: '1px solid #d10023', background: '#ffff' }} />
                                 </Box>
                             }
 

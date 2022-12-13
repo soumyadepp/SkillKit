@@ -87,7 +87,7 @@ export default function StaticStepper() {
             </Stepper>
             {activeStep === steps.length ? (
                 <React.Fragment>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{ my:3,display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Typography sx={{ mt: 2, mb: 1 }} variant="h4">
                             You are now ready to go
                         </Typography>
