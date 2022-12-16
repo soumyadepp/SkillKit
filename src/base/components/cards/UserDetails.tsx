@@ -5,8 +5,9 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { AdminPanelSettingsRounded, PendingActionsRounded, VerifiedRounded } from '@mui/icons-material';
 import { Container } from '@mui/system';
-import { Avatar, Tooltip } from '@mui/material';
+import { Avatar, Backdrop, Button, Modal, Tooltip } from '@mui/material';
 import { useSpring, animated } from 'react-spring';
+import { Link } from 'react-router-dom';
 
 type UserDetailProps = {
     nickname?: string;
@@ -25,10 +26,6 @@ export default function UserDetails(props: UserDetailProps) {
     const picture = props.picture;
     const verified = props.verified || false;
     const isAdmin = props.isAdmin || false;
-    const [open, setOpen] = React.useState(false);
-
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
 
     interface FadeProps {
         children?: React.ReactElement;
@@ -38,17 +35,17 @@ export default function UserDetails(props: UserDetailProps) {
     }
 
     const Fade = React.forwardRef<HTMLDivElement, FadeProps>(function Fade(props, ref) {
-        const { in: open, children, onEnter, onExited, ...other } = props;
+        const { in: newOpen, children, onEnter, onExited, ...other } = props;
         const style = useSpring({
             from: { opacity: 0 },
-            to: { opacity: open ? 1 : 0 },
+            to: { opacity: newOpen ? 1 : 0 },
             onStart: () => {
-                if (open && onEnter) {
+                if (newOpen && onEnter) {
                     onEnter();
                 }
             },
             onRest: () => {
-                if (!open && onExited) {
+                if (!newOpen && onExited) {
                     onExited();
                 }
             },
@@ -94,13 +91,16 @@ export default function UserDetails(props: UserDetailProps) {
                                     {!verified && <Tooltip title="Email Verification Pending">
                                         <PendingActionsRounded sx={{ color: '#eed202' }} />
                                     </Tooltip>}
-                                    {isAdmin &&<Tooltip title="Admin">
-                                         <AdminPanelSettingsRounded sx={{ color: '#1976d2' }} /></Tooltip>}
+                                    {isAdmin && <Tooltip title="Admin">
+                                        <AdminPanelSettingsRounded sx={{ color: '#1976d2' }} /></Tooltip>}
                                 </Typography>
                             </Container>
                             <Typography sx={{ mb: 1, mx: 0 }} color="GrayText" fontSize={12}>
                                 {username}
                             </Typography>
+                            <Link style={{textDecoration:'none'}} to="/edit">
+                            <Button variant="contained">Edit Profile</Button>
+                            </Link>
                         </Container>
                     </Box>
                 </Container>

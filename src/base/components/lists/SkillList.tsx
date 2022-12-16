@@ -74,7 +74,7 @@ export default function SkillList(props: ListPropType) {
   return (
     <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       <nav aria-label="skills list">
-        {skills.length === 0 && <Paper sx={{my:4,maxHeight:'250px',overflow:'auto',boxShadow:'none'}}>
+        {skills?.length === 0 && <Paper sx={{my:4,maxHeight:'250px',overflow:'auto',boxShadow:'none'}}>
           <Box sx={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
             <Typography variant="h5">Nothing to show here.</Typography>
             <BackpackRounded sx={{my:2}} color='primary'/>

@@ -41,7 +41,9 @@ export type UserAddress = {
     street?: string;
     line1?: string;
     line2?: string;
+    state?:string;
     city?:string;
+    pincode?:string;
 }
 
 export type TechType = {

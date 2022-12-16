@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import MultiSelect from 'multiselect-react-dropdown';
-import {options} from "./utils";
+import { options } from "./utils";
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
@@ -19,52 +19,54 @@ const theme = createTheme();
 type OptionType = {
     id: number;
     name: string;
+    image:string;
     value: string;
 }
 
 
 const baseApiURL = `https://dev-aq0ru8q8.us.auth0.com/api/v2`;
+const mongoApiURL = 'http://localhost:4000/api/v1';
 
 export default function UserForm() {
     const { user, getAccessTokenSilently } = useAuth0();
     const [skills, setSkills] = useState<OptionType[]>();
     const [userMetadata, setUserMetadata] = useState<any>();
-    const [token,setToken] = useState("");
-    const [isLoading,setIsLoading] = useState(false);
+    const [token, setToken] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const handleSelect = (selectedList: any, selectedItem: any) => {
         setSkills(selectedList);
     }
     const handleRemove = (selectedList: any, selectedItem: OptionType) => {
         setSkills(selectedList);
     }
+    const getUserMetadata = async () => {
+        const domain = "dev-aq0ru8q8.us.auth0.com";
+        try {
+            const accessToken = await getAccessTokenSilently({
+                audience: `https://${domain}/api/v2/`,
+                scope: "read:current_user",
+            });
+            setToken(accessToken);
+            console.log(accessToken);
+            const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
+
+
+            const metadataResponse = await fetch(userDetailsByIdUrl, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            const { user_metadata } = await metadataResponse.json()
+            setUserMetadata(user_metadata);
+            localStorage.setItem('user_data', JSON.stringify(user_metadata));
+        } catch (e: any) {
+            console.log(e.message);
+        }
+    };
     useEffect(() => {
-        const getUserMetadata = async () => {
-            const domain = "dev-aq0ru8q8.us.auth0.com";
-            try {
-                const accessToken = await getAccessTokenSilently({
-                    audience: `https://${domain}/api/v2/`,
-                    scope: "read:current_user",
-                });
-                setToken(accessToken);
-                console.log(accessToken);
-                const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
-
-                
-                const metadataResponse = await fetch(userDetailsByIdUrl, {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                });
-
-                const { user_metadata } = await metadataResponse.json()
-                setUserMetadata(user_metadata);
-                localStorage.setItem('user_data', JSON.stringify(user_metadata));
-            } catch (e: any) {
-                console.log(e.message);
-            }
-        };
         getUserMetadata();
-    }, [getAccessTokenSilently,user?.sub]);
+    }, [getAccessTokenSilently, user?.sub]);
     useEffect(() => {
         setIsLoading(true);
         axios.get(`${baseApiURL}/users/${user?.sub}`, {
@@ -80,10 +82,10 @@ export default function UserForm() {
             .catch((err) => {
                 setTimeout(() => {
                     setIsLoading(false);
-                },10000);
+                }, 10000);
                 console.log(err);
             })
-    }, [user,token]);
+    }, [user, token]);
     const patchRequestOptions = {
         method: 'PATCH',
         url: `${baseApiURL}/users/${user?.sub}`,
@@ -91,19 +93,32 @@ export default function UserForm() {
         data: { user_metadata: { skills: skills } }
     }
 
+    const mongoPatchRequestOptions = {
+        method: 'PATCH',
+        url: `${mongoApiURL}/users/metadata/skills/${user?.email}`,
+        data: { skills: skills }
+    }
+
     const handleSubmit = (e: any) => {
         e.preventDefault();
         axios.request(patchRequestOptions).then((res) => {
-                console.log(res);
-                toast.success('Successfully Updated.')
-                setTimeout(() => {
-                    window.location.reload();
-                },1500);
+            console.log(res);
+            axios.request(mongoPatchRequestOptions).then((res2) => {
+                console.log(res2);
             })
+                .catch(err => {
+                    toast.error(err.message);
+                    console.log(err);
+                })
+            toast.success('Successfully Updated.')
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        })
             .catch((err) => {
                 toast.error(err.message);
                 console.log(err);
-            })
+            });
     }
     return (
         <ThemeProvider theme={theme}>
@@ -117,9 +132,9 @@ export default function UserForm() {
                         alignItems: "start"
                     }}
                 >
-                    <Typography component="h1" variant="h6" fontSize={18} sx={{display:'flex',alignItems:'center',lineHeight:'1rem',color:'#1976d2'}}>
+                    <Typography component="h1" variant="h6" fontSize={18} sx={{ display: 'flex', alignItems: 'center', lineHeight: '1rem', color: '#1976d2' }}>
                         Help us know you better.
-                        <TaskAltOutlined sx={{color:'green'}}/>
+                        <TaskAltOutlined sx={{ color: 'green' }} />
                     </Typography>
                     <Box
                         component="form"
@@ -136,7 +151,7 @@ export default function UserForm() {
                                 onRemove={handleRemove}
                                 selectedValues={skills}
                                 placeholder="Select Skills"></MultiSelect>}
-                            {isLoading && <ComponentLoader/>}
+                            {isLoading && <ComponentLoader />}
                             <Button
                                 onClick={handleSubmit}
                                 fullWidth

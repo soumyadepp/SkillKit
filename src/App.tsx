@@ -5,6 +5,7 @@ import FullScreenLoader from './base/components/loaders/FullScreenLoader';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainPage from './base/pages/homepage/MainPage';
 import { ThemeProvider, createTheme } from '@mui/material';
+import EditProfile from './base/pages/editProfile/EditProfile';
 
 const THEME = createTheme({
   typography: {
@@ -27,6 +28,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<MainPage />} />
+            <Route path="/edit" element={<EditProfile/>}/>
           </Routes>
         </div>
       </Router>

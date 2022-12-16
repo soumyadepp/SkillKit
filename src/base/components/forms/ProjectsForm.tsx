@@ -150,9 +150,9 @@ export default function ProjectsForm(props: ProjectsFormPropType) {
                                     onChange={e => handleFrontendChange(e)}
                                     required
                                 >
-                                    {frontend.map((item) => {
+                                    {frontend.map((item,index) => {
                                         return (
-                                            <MenuItem value={item.name} key={item.name}>
+                                            <MenuItem value={item.name} key={index}>
                                                 {item.name}
                                             </MenuItem>
                                         )
