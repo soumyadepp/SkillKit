@@ -37,6 +37,14 @@ export type User = {
     family_name?:string;
 }
 
+export type UserDetailType = {
+    username?: string;
+    fullName?:string;
+    designation?: string;
+    skills?: [SkillType];
+    address?: UserAddress;
+  }
+
 export type UserAddress = {
     street?: string;
     line1?: string;

@@ -2,7 +2,7 @@ import { Button, Container, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useState } from 'react';
 import homeImage from '../../assets/homepageImage.png';
-import StaticStepper from '../stepper/StaticStepper';
+import StaticStepper from '../components/stepper/StaticStepper';
 
 export default function LandingPage() {
     const [email, setEmail] = useState("");

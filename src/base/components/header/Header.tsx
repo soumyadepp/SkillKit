@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from 'react-router-dom';
 
 
 type PageType = {
@@ -44,7 +45,7 @@ function ResponsiveAppBar() {
     const settings: SettingType[] = [
         {
             name: 'Profile',
-            link: '/profile',
+            link: '/edit',
         },
         {
             name: 'Dashboard',
@@ -191,9 +192,9 @@ function ResponsiveAppBar() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                setting?.name !== 'Logout' ? <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                                setting?.name !== 'Logout' ? <Link style={{textDecoration:'none',color:'#000'}} to={setting.link}><MenuItem key={setting.name} onClick={handleCloseUserMenu}>
                                     <Typography textAlign="center">{setting.name}</Typography>
-                                </MenuItem> : <MenuItem key={setting.name} onClick={() => logout()}>
+                                </MenuItem></Link> : <MenuItem key={setting.name} onClick={() => logout()}>
                                     {setting.name}
                                 </MenuItem>
                             ))}

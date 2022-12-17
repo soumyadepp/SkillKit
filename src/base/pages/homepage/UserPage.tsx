@@ -3,11 +3,13 @@ import { Box, Container } from '@mui/system'
 import { Toaster } from 'react-hot-toast'
 import UserDetails from '../../components/cards/UserDetails'
 import CommonPanel from '../../components/panels/CommonPanel'
+import { UserDetailType } from '../../types'
 
 type UserPagePropType = {
     user: User;
     token: string;
     userMetadata:any;
+    userDetails?:UserDetailType;
     isAdmin: boolean;
 }
 

@@ -112,8 +112,8 @@ export default function ProjectsList(props: ProjectsListPropType) {
                         )
                     })}
                 </List>}
-                {!projects && <ComponentLoader />}
             </nav>
+            {!projects && <ComponentLoader />}
         </Box>
     )
 }
