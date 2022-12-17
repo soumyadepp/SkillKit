@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { ExpandMoreRounded } from '@mui/icons-material';
-import { Accordion, AccordionDetails, AccordionSummary, Avatar, Chip, Divider, List, ListItem, ListItemAvatar, ListItemText, Tooltip, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Avatar, Chip, Divider, List,TextField, Tooltip, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import axios from 'axios';
 import { useEffect, useState } from 'react'
@@ -13,8 +13,12 @@ const baseApiURL = "http://localhost:4000/api/v1";
 export default function UserList() {
     const { user } = useAuth0();
     const [users, setUsers] = useState<any>();
-    const [expanded,setExpanded] = useState<String|false>();
+    const [expanded, setExpanded] = useState<String | false>();
     const [isLoading, setIsLoading] = useState(false);
+    const [searchQueryUser, setSearchQueryUser] = useState<String>("");
+    const flatProps = {
+        options: users?.filter((mappedUser:any) => mappedUser.user_email !== user?.email)?.map((u:any)=> u.username || u.user_email)
+    };
     const handleExpandedChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
@@ -27,12 +31,24 @@ export default function UserList() {
             })
         setIsLoading(false);
     }
+
     useEffect(() => {
         fetchUsers();
     }, [users]);
     return (
         <div>
-            <Box sx={{ my: 1 }} display="flex">
+            <Box sx={{ my: 1 }} display="flex" flexDirection="column" alignItems="center">
+                {users && <Autocomplete
+                    {...flatProps}
+                    disablePortal
+                    value={searchQueryUser}
+                    onChange={(event:any,newValue:any) => {
+                        setSearchQueryUser(newValue);
+                    }}
+                    id="user-search"
+                    sx={{ width:'100%',mb:2}}
+                    renderInput={(params:any) => <TextField {...params} label="Search User" />}
+                />}
                 {!isLoading && users && user && <List>
                     {users.map((listUser: any, index: any) => {
                         if (listUser.user_email === user?.email) return;
@@ -56,14 +72,14 @@ export default function UserList() {
                                         <Chip sx={{ mx: 1 }} label={designationMap.get(listUser.designation) || 'Unassigned'} />
                                     </Box>
                                     {listUser.address && <Box sx={{ my: 2, mx: 1 }}>
-                                        <Typography sx={{mb:2}} fontSize={18} color="primary">Skills</Typography>
+                                        <Typography sx={{ mb: 2 }} fontSize={18} color="primary">Skills</Typography>
                                         <Box display="flex" alignItems="center" flexWrap="wrap">
                                             {listUser && listUser.skills && listUser.skills.map((skill: SkillType) => {
                                                 return (
-                                                    <Box sx={{mx:2,my:1}}>
-                                                    <Tooltip title={skill.name}>
-                                                        <img src={skill.image} alt={skill.name} height="35px" width="auto" />
-                                                    </Tooltip>
+                                                    <Box sx={{ mx: 2, my: 1 }}>
+                                                        <Tooltip title={skill.name}>
+                                                            <img src={skill.image} alt={skill.name} height="35px" width="auto" />
+                                                        </Tooltip>
                                                     </Box>
                                                 )
                                             })}
