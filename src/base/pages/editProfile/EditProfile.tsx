@@ -38,7 +38,12 @@ export default function EditProfile() {
                 })
                 .catch(err => {
                     console.log(err);
-                    toast.error(err.message);
+                    if(err.response.status === 405){
+                        toast.error('Username already exists. Please select a different username');
+                    }
+                    else{
+                        toast.error(err.message);
+                    }
                 })
         }
     }
