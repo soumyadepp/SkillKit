@@ -5,9 +5,9 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { AdminPanelSettingsRounded, PendingActionsRounded, VerifiedRounded } from '@mui/icons-material';
 import { Container } from '@mui/system';
-import { Avatar, Backdrop, Button, Modal, Tooltip } from '@mui/material';
-import { useSpring, animated } from 'react-spring';
+import { Avatar, Button, Chip, Tooltip } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { designationMap } from '../../utils/common_data';
 
 type UserDetailProps = {
     nickname?: string;
@@ -17,6 +17,7 @@ type UserDetailProps = {
     picture?: string;
     verified?: boolean;
     isAdmin?: boolean;
+    designation?:string;
 };
 
 export default function UserDetails(props: UserDetailProps) {
@@ -26,56 +27,14 @@ export default function UserDetails(props: UserDetailProps) {
     const picture = props.picture;
     const verified = props.verified || false;
     const isAdmin = props.isAdmin || false;
-
-    interface FadeProps {
-        children?: React.ReactElement;
-        in: boolean;
-        onEnter?: () => {};
-        onExited?: () => {};
-    }
-
-    const Fade = React.forwardRef<HTMLDivElement, FadeProps>(function Fade(props, ref) {
-        const { in: newOpen, children, onEnter, onExited, ...other } = props;
-        const style = useSpring({
-            from: { opacity: 0 },
-            to: { opacity: newOpen ? 1 : 0 },
-            onStart: () => {
-                if (newOpen && onEnter) {
-                    onEnter();
-                }
-            },
-            onRest: () => {
-                if (!newOpen && onExited) {
-                    onExited();
-                }
-            },
-        });
-
-        return (
-            <animated.div ref={ref} style={style} {...other}>
-                {children}
-            </animated.div>
-        );
-    });
-
-    const style = {
-        position: 'absolute' as 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        border: '0.5px solid #000d1a',
-        boxShadow: 24,
-        p: 4,
-    };
+    const {designation} = props;
 
     const UserCard = (
         <React.Fragment>
             <CardContent>
                 <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Avatar alt="Remy Sharp" src={picture} />
+                        <Avatar sx={{height:'5rem',width:'5rem'}} alt="Remy Sharp" src={picture} />
                         <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
                             <Typography sx={{ fontSize: 10 }} color="InactiveCaptionText" gutterBottom>
                                 {email}
@@ -95,9 +54,7 @@ export default function UserDetails(props: UserDetailProps) {
                                         <AdminPanelSettingsRounded sx={{ color: '#1976d2' }} /></Tooltip>}
                                 </Typography>
                             </Container>
-                            <Typography sx={{ mb: 1, mx: 0 }} color="GrayText" fontSize={12}>
-                                {username}
-                            </Typography>
+                            <Chip sx={{mb:1}} label={designationMap.get(designation)}/>
                             <Link style={{textDecoration:'none'}} to="/edit">
                             <Button variant="contained">Edit Profile</Button>
                             </Link>

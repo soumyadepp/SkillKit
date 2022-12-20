@@ -25,13 +25,14 @@ type SettingType = {
     name: string;
     link: string;
 }
-const HeaderStyles = {
-    background: '#000d12',
-    color: '#efefef',
-};
 
-function ResponsiveAppBar() {
+type HeaderProps = {
+    picture?:string;
+}
+
+function ResponsiveAppBar(props:HeaderProps) {
     const { user, isLoading, loginWithRedirect, logout } = useAuth0();
+    const {picture} = props;
     const pages: PageType[] = [
         {
             name: 'Projects',
@@ -172,7 +173,7 @@ function ResponsiveAppBar() {
                     {!isLoading && user && <Box sx={{ display: 'flex', flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src={user?.picture} />
+                                <Avatar alt="Remy Sharp" src={picture || user?.picture} />
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -192,7 +193,7 @@ function ResponsiveAppBar() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                setting?.name !== 'Logout' ? <Link style={{textDecoration:'none',color:'#000'}} to={setting.link}><MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                                setting?.name !== 'Logout' ? <Link key={setting.name} style={{textDecoration:'none',color:'#000'}} to={setting.link}><MenuItem key={setting.name} onClick={handleCloseUserMenu}>
                                     <Typography textAlign="center">{setting.name}</Typography>
                                 </MenuItem></Link> : <MenuItem key={setting.name} onClick={() => logout()}>
                                     {setting.name}

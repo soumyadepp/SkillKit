@@ -1,10 +1,5 @@
-import { Fab, Paper, Typography } from '@mui/material';
+import { Fab, Paper, Tooltip, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import { SkillType } from '../../types';
 import Modal from '@mui/material/Modal';
 import EditIcon from '@mui/icons-material/Edit';
@@ -19,6 +14,7 @@ import { BackpackRounded } from '@mui/icons-material';
 
 type ListPropType = {
   skills: SkillType[];
+  token:string;
 }
 
 
@@ -67,7 +63,7 @@ const style = {
 
 
 export default function SkillList(props: ListPropType) {
-  const { skills } = props;
+  const { skills,token} = props;
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
@@ -80,24 +76,21 @@ export default function SkillList(props: ListPropType) {
             <BackpackRounded sx={{my:2}} color='primary'/>
           </Box>
         </Paper>}
-        {skills && <Paper sx={{maxHeight:'250px',overflow:'auto',boxShadow:'none'}}><List>
+        {skills && <Box display="flex" alignItems="center" justifyContent="start" flexWrap="wrap">
           {skills.map((skill: SkillType) => {
             return (
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <img src={skill.image} height="30px" width="auto" />
-                  </ListItemIcon>
-                  <ListItemText primary={skill.name} />
-                </ListItemButton>
-              </ListItem>
+              <Box mx={1} my={1}>
+                <Tooltip title={skill.name}>
+                  <img src={skill.image} alt={skill.value} style={{width:'3rem'}} height="auto"/>
+                </Tooltip>
+              </Box>
             )
           })}
-        </List></Paper>}
+        </Box>}
         <Box sx={{ my: 1,display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-          <Fab color="secondary" aria-label="edit" sx={{ background: '#1976d2', display: 'flex', alignContent: 'center' }}>
-            {skills?.length > 0 && <EditIcon onClick={handleOpen} />}
-            {skills?.length === 0 && <AddIcon onClick={handleOpen} />}
+          <Fab color="secondary" aria-label="edit" sx={{ background: '#1976d2', display: 'flex', alignContent: 'center' }} onClick={handleOpen}>
+            {skills?.length > 0 && <EditIcon/>}
+            {skills?.length === 0 && <AddIcon/>}
           </Fab>
         </Box>
         <Modal
@@ -113,7 +106,7 @@ export default function SkillList(props: ListPropType) {
         >
           <Fade in={open}>
             <Box sx={style}>
-              <SkillsForm/>
+              <SkillsForm token={token} skills={skills}/>
             </Box>
           </Fade>
         </Modal>

@@ -23,7 +23,7 @@ export default function ProjectAccordion(props: ProjectAccordionPropType) {
                 <List sx={{ textAlign: 'left' }}>
                     {projectItems && projectItems.map((tech) => {
                         return (
-                            <ListItemButton>
+                            <ListItemButton key={tech?._id}>
                                 <ListItemText sx={{ fontSize: '12px' }}>
                                     <Typography fontSize={14}>{tech.name}</Typography>
                                 </ListItemText>

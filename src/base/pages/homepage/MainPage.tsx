@@ -8,15 +8,20 @@ import axios from 'axios';
 import { UserDetailType } from '../../types';
 
 
-const baseApiURL = "http://localhost:4000/api/v1";
-export default function MainPage() {
+const baseApiURL = process.env.REACT_APP_BACKEND_URL;
+type MainPageProps = {
+  picture?:string;
+}
+
+export default function MainPage(props:MainPageProps) {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const {picture} = props;
   const [userMetadata, setUserMetadata] = useState<any>(null);
   const [token, setToken] = useState<string>("");
   const [role, setRole] = useState<string>("");
   const [propMetadata, setPropMetadata] = useState<UserDetailType>();
   const getUserMetadata = async () => {
-    const domain = "dev-aq0ru8q8.us.auth0.com";
+    const domain = process.env.REACT_APP_AUTH0_DOMAIN;
     try {
 
       const accessToken = await getAccessTokenSilently({
@@ -55,7 +60,7 @@ export default function MainPage() {
     getUserMetadata();
   }, [getAccessTokenSilently, user?.sub]);
   if (!user || !isAuthenticated) return <LandingPage />
-  if (role === 'admin') return <AdminPage isAdmin={true} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} />
-  else if (role === 'user') return <Userpage isAdmin={false} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} />
+  if (role === 'admin') return <AdminPage isAdmin={true} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} picture={picture} />
+  else if (role === 'user') return <Userpage isAdmin={false} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} picture={picture}/>
   else return <FullScreenLoader text="Fetching User Data..." />
 }

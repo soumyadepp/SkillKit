@@ -20,7 +20,7 @@ type AdminPanelPropType = {
 }
 
 
-const baseApiURL = 'http://localhost:4000/api/v1';
+const baseApiURL = process.env.REACT_APP_BACKEND_URL;
 
 const statusOptions = [
   {
@@ -183,7 +183,7 @@ export default function AdminPanel(props: AdminPanelPropType) {
                         </Box>
                         <Select
                           fullWidth
-                          value={status}
+                          value={status || ''}
                           hidden
                           onChange={(e) => {
                             setStatus(e.target.value);

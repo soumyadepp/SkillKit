@@ -5,6 +5,21 @@ type IdentityType = {
     isSocial: boolean;
 }
 
+type TransactionType = {
+    id: string;
+    locale:string;
+    protocol:string;
+    requested_scopes:string[];
+    acr_values: string[];
+    ui_locales: string[];
+    redirect_uri:string;
+    prompt:string[];
+    state:string;
+    login_hint:string;
+    response_mode:string;
+    response_type:string[];
+}
+
 export type SkillType = {
     id: number;
     name: string;
@@ -36,6 +51,16 @@ export type User = {
     given_name?:string;
     family_name?:string;
 }
+
+export type UserLocalType = {
+    connection:string;
+    client:string;
+    email:string;
+    password:string;
+    tenant:string;
+    transaction:TransactionType;
+    request_language:string;
+};
 
 export type UserDetailType = {
     username?: string;

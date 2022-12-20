@@ -12,80 +12,28 @@ import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
 import ComponentLoader from "../loaders/ComponentLoader";
 import { TaskAltOutlined } from "@mui/icons-material";
+import { SkillType } from "../../types";
 
 const theme = createTheme();
+const baseApiURL = `https://dev-aq0ru8q8.us.auth0.com/api/v2`;
+const mongoApiURL = process.env.REACT_APP_BACKEND_URL;
 
-
-type OptionType = {
-    id: number;
-    name: string;
-    image:string;
-    value: string;
+type UserFormPropType = {
+    skills: SkillType[];
+    token: string;
 }
 
-
-const baseApiURL = `https://dev-aq0ru8q8.us.auth0.com/api/v2`;
-const mongoApiURL = 'http://localhost:4000/api/v1';
-
-export default function UserForm() {
-    const { user, getAccessTokenSilently } = useAuth0();
-    const [skills, setSkills] = useState<OptionType[]>();
-    const [userMetadata, setUserMetadata] = useState<any>();
-    const [token, setToken] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+export default function UserForm(props:UserFormPropType) {
+    const { user } = useAuth0();
+    const {token} = props;
+    const [skills, setSkills] = useState<SkillType[]>(props.skills);
     const handleSelect = (selectedList: any, selectedItem: any) => {
         setSkills(selectedList);
     }
-    const handleRemove = (selectedList: any, selectedItem: OptionType) => {
+    const handleRemove = (selectedList: any, selectedItem: SkillType) => {
         setSkills(selectedList);
     }
-    const getUserMetadata = async () => {
-        const domain = "dev-aq0ru8q8.us.auth0.com";
-        try {
-            const accessToken = await getAccessTokenSilently({
-                audience: `https://${domain}/api/v2/`,
-                scope: "read:current_user",
-            });
-            setToken(accessToken);
-            console.log(accessToken);
-            const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
 
-
-            const metadataResponse = await fetch(userDetailsByIdUrl, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            });
-
-            const { user_metadata } = await metadataResponse.json()
-            setUserMetadata(user_metadata);
-            localStorage.setItem('user_data', JSON.stringify(user_metadata));
-        } catch (e: any) {
-            console.log(e.message);
-        }
-    };
-    useEffect(() => {
-        getUserMetadata();
-    }, [getAccessTokenSilently, user?.sub]);
-    useEffect(() => {
-        setIsLoading(true);
-        axios.get(`${baseApiURL}/users/${user?.sub}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then((res) => {
-                setUserMetadata(res.data?.user_metadata);
-                setSkills(res.data?.user_metadata?.skills);
-                setIsLoading(false);
-            })
-            .catch((err) => {
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 10000);
-                console.log(err);
-            })
-    }, [user, token]);
     const patchRequestOptions = {
         method: 'PATCH',
         url: `${baseApiURL}/users/${user?.sub}`,
@@ -143,15 +91,14 @@ export default function UserForm() {
                     >
                         <Box sx={{ my: 2 }}>
                             <Typography sx={{ my: 1, textAlign: 'left' }} component="h5" variant="h6">Add or Update Skills</Typography>
-                            {!isLoading && <MultiSelect
+                            <MultiSelect
                                 style={{ fontSize: '3vmin' }}
                                 options={options}
                                 displayValue="name"
                                 onSelect={handleSelect}
                                 onRemove={handleRemove}
                                 selectedValues={skills}
-                                placeholder="Select Skills"></MultiSelect>}
-                            {isLoading && <ComponentLoader />}
+                                placeholder="Select Skills"></MultiSelect>
                             <Button
                                 onClick={handleSubmit}
                                 fullWidth

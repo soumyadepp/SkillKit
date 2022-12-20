@@ -7,14 +7,19 @@ import axios from 'axios';
 import { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import { designationMap,desigations } from '../../utils/common_data';
+import FullScreenLoader from '../../components/loaders/FullScreenLoader';
+import ImageUpload from '../../components/forms/imageUpload/ImageUpload';
 const theme = createTheme();
 
-const baseApiURL = "http://localhost:4000/api/v1";
+const baseApiURL = process.env.REACT_APP_BACKEND_URL;
 
+type EditProfileProps = {
+    picture?:string;
+}
 
-
-export default function EditProfile() {
+export default function EditProfile(props:EditProfileProps) {
     const { user } = useAuth0();
+    const {picture} = props;
     const [formDesignation, setFormDesignation] = useState<any>('');
     const [formStreet, setFormStreet] = useState<any>('');
     const [formLine1, setFormLine1] = useState<any>('');
@@ -24,6 +29,7 @@ export default function EditProfile() {
     const [formPincode, setFormPincode] = useState('');
     const [formFullName, setFormFullName] = useState<any>('');
     const [formUsername, setFormUsername] = useState<any>('');
+    const [isLoading,setIsLoading] = useState(false);
 
     const handleSubmitBasicDetails = () => {
         if (user && formDesignation && formFullName && formUsername) {
@@ -70,6 +76,7 @@ export default function EditProfile() {
         }
     }
     const fetchUserMetadata = () => {
+        setIsLoading(true);
         axios.get(`${baseApiURL}/users/metadata/${user?.email}`)
             .then((res) => {
                 console.log(res.data?.data);
@@ -86,10 +93,12 @@ export default function EditProfile() {
             .catch(err => {
                 console.log(err);
             })
+        setIsLoading(false);
     }
     useEffect(() => {
         fetchUserMetadata();
     }, [])
+    if(isLoading) return <FullScreenLoader/>
     return (
         <div>
             <Container sx={{ mt: 4, minHeight: '70vh', display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
@@ -97,8 +106,11 @@ export default function EditProfile() {
                     <Toaster />
                     <Container component="main" maxWidth="lg" sx={{ boxShadow: '0px 0px 3px gray', color: '#000', mt: 6, display: 'flex', alignItems: 'start', justifyContent: 'space-between' }}>
                         <Box display="flex" alignItems="center" sx={{ p: 2 }}>
-                            <Avatar src={user?.picture} sx={{ height: '100px', width: '100px' }} />
-                            <Box display="flex" flexDirection="column" alignItems="start" sx={{ mx: 2 }}>
+                            <Box>
+                            <Avatar src={picture || user?.picture} sx={{ height: '100px', width: '100px' }} />
+                            <ImageUpload/>
+                            </Box>
+                            <Box display="flex" flexDirection="column" alignItems="start" width="100%" sx={{ mr: 2 }}>
                                 <Typography fontSize={25}>{formFullName || user?.given_name}</Typography>
                                 <Typography fontSize={20} sx={{ color: '#1976d2' }}>{formUsername || user?.nickname}</Typography>
                                 <Typography fontSize={14} color="GrayText">{user?.email}</Typography>
@@ -152,7 +164,7 @@ export default function EditProfile() {
                                 <Box sx={{ my: 1 }} display="flex" flexDirection="column" alignItems="center">
                                     <Box sx={{ my: 1, display: 'flex', flexDirection: 'column', alignItems: 'start', width: '100%', justifyContent: 'space-evenly' }}>
                                         <FormControl sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-                                            <Typography fontSize={18} sx={{ my: 2 }} color="#1976d2">
+                                            <Typography fontSize={18} sx={{ mb: 2 }} color="#1976d2">
                                                 Designation
                                             </Typography>
                                             <Select
@@ -185,8 +197,8 @@ export default function EditProfile() {
                                 </Box>
                             </Box>
                         </Box>
-                        <Box sx={{ mx: 4, my: 1 }} display="flex" flexDirection="column" alignItems="center" justifyContent="center" flex="0.7">
-                            <Typography fontSize={18} sx={{ my: 1, color: '#1976d2' }}>Update your Address</Typography>
+                        <Box sx={{ mx: 4, my: 1 }} display="flex" flexDirection="column" alignItems="start" justifyContent="center" flex="0.7">
+                            <Typography fontSize={18} sx={{ mb: 2,mt:1, color: '#1976d2' }}>Update your Address</Typography>
                             <TextField
                                 sx={{ my: 1 }}
                                 fullWidth

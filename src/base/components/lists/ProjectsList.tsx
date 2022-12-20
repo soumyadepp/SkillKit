@@ -1,82 +1,23 @@
 import { Accordion, AccordionDetails, AccordionSummary, List, Divider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import toast from 'react-hot-toast';
+import React, { useState } from 'react'
 import { Project } from '../../types'
 import ComponentLoader from '../loaders/ComponentLoader';
-import { animated, useSpring } from 'react-spring';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ProjectAccordion from './ProjectAccordion';
-interface FadeProps {
-    children?: React.ReactElement;
-    in: boolean;
-    onEnter?: () => {};
-    onExited?: () => {};
-}
-
-const Fade = React.forwardRef<HTMLDivElement, FadeProps>(function Fade(props, ref) {
-    const { in: open, children, onEnter, onExited, ...other } = props;
-    const style = useSpring({
-        from: { opacity: 0 },
-        to: { opacity: open ? 1 : 0 },
-        onStart: () => {
-            if (open && onEnter) {
-                onEnter();
-            }
-        },
-        onRest: () => {
-            if (!open && onExited) {
-                onExited();
-            }
-        },
-    });
-
-    return (
-        <animated.div ref={ref} style={style} {...other}>
-            {children}
-        </animated.div>
-    );
-});
-
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '0.5px solid #000d1a',
-    boxShadow: 24,
-    p: 4,
-};
 
 type ProjectsListPropType = {
-    token: string;
+    projects?:Project[];
 }
 
+
 export default function ProjectsList(props: ProjectsListPropType) {
-    const {token} = props;
+    const {projects} = props;
     const [expanded, setExpanded] = useState<string | false>(false);
-    const [isLoading,setIsLoading] = useState<boolean>(false);
     const handleExpandedChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
-    const [projects, setProjects] = useState<Project[]>([]);
-
-    useEffect(() => {
-        setIsLoading(true);
-        axios.get('http://localhost:4000/api/v1/projects')
-            .then((res) => {
-                setProjects(res.data?.data);
-            })
-            .catch(err => {
-                toast.error(err.message);
-            })
-        setIsLoading(false);
-    },[token]);
-    if(isLoading) return <ComponentLoader/>
     return (
         <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             <nav aria-label="skills list">

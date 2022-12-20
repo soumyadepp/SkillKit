@@ -12,11 +12,11 @@ type PanelPropType = {
   skills: SkillType[];
   projects?: any;
   token:string;
+  isAdmin?:boolean;
 }
 
 export default function CommonPanel(props:PanelPropType) {
-  const {skills} = props || [];
-  const {token} = props;
+  const {skills,token,isAdmin,projects} = props;
   const [value, setValue] = React.useState('1');
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -26,15 +26,15 @@ export default function CommonPanel(props:PanelPropType) {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-          <Tab label="Projects" value="1" />
+          <Tab label={`${isAdmin ? 'All' : 'My'} Projects`} value="1" />
             <Tab label="My Skills" value="2" />
           </TabList>
         </Box>
         <TabPanel value="1">
-          <ProjectsList token={token}/>
+          <ProjectsList projects={projects}/>
         </TabPanel>
         <TabPanel value="2">
-          <SkillList skills={skills}/>
+          <SkillList token={token} skills={skills}/>
         </TabPanel>
       </TabContext>
     </Box>

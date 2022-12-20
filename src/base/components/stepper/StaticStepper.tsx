@@ -7,16 +7,13 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { VerifiedOutlined } from '@mui/icons-material';
 
-const steps = ['Create your Account', 'Create a new project', 'Assign users to project', 'Check progress'];
+type StepperPropType = {
+    steps: String[];
+    stepMap: Map<Number, String>;
+}
 
-const stepMap = new Map();
-stepMap.set(1, "First create your admin account with the permission of the system administrator of the company. You will then gain the authority to manage users.");
-stepMap.set(2, "Using our dynamic and interactive forms, you can create a Project for your team, as well as select the stack required for the project.");
-stepMap.set(3, "Assign work to the employees in your firm efficiently with our management system.");
-stepMap.set(4, "The upcoming dashboard will allow you to track the progress of your project as and when the employees update their status.");
-
-
-export default function StaticStepper() {
+export default function StaticStepper(props:StepperPropType) {
+    const {stepMap,steps} = props;
     const [activeStep, setActiveStep] = React.useState(0);
     const [skipped, setSkipped] = React.useState(new Set<number>());
 
@@ -79,7 +76,7 @@ export default function StaticStepper() {
                         stepProps.completed = false;
                     }
                     return (
-                        <Step key={label} {...stepProps}>
+                        <Step key={index} {...stepProps}>
                             <StepLabel {...labelProps}>{label}</StepLabel>
                         </Step>
                     );
@@ -87,13 +84,13 @@ export default function StaticStepper() {
             </Stepper>
             {activeStep === steps.length ? (
                 <React.Fragment>
-                    <Box sx={{ my:3,display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{ my: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Typography sx={{ mt: 2, mb: 1 }} variant="h4">
                             You are now ready to go
                         </Typography>
-                        <VerifiedOutlined style={{ color: 'green'}} sx={{mx:2,mt:1}}/>
+                        <VerifiedOutlined style={{ color: 'green' }} sx={{ mx: 2, mt: 1 }} />
                     </Box>
-                    
+
                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                         <Box sx={{ flex: '1 1 auto' }} />
                         <Button onClick={handleReset}>Reset</Button>
@@ -101,7 +98,7 @@ export default function StaticStepper() {
                 </React.Fragment>
             ) : (
                 <React.Fragment>
-                    <Typography variant='h5' sx={{ mt: 2, mb: 1 }}>{stepMap.get(activeStep + 1)}</Typography>
+                    <Typography variant='h5' sx={{ mt: 3,mx:1, mb: 1 }}>{stepMap.get(activeStep + 1)}</Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                         <Button
                             color="inherit"

@@ -80,3 +80,22 @@ designationMap.set('data_analyst', 'Data Analyst');
 designationMap.set('business_analyst', 'Business Analyst');
 designationMap.set('associate_software_engineer', 'ASE');
 designationMap.set('senior_software_engineer', 'SSE');
+
+
+const adminSteps = ['Create your Account', 'Create a new project', 'Assign users to project', 'Check progress'];
+const adminStepMap = new Map();
+
+adminStepMap.set(1, "First create your admin account with the permission of the system administrator of the company. You will then gain the authority to manage users.");
+adminStepMap.set(2, "Using our dynamic and interactive forms, you can create a Project for your team, as well as select the stack required for the project.");
+adminStepMap.set(3, "Assign work to the employees in your firm efficiently with our management system.");
+adminStepMap.set(4, "The upcoming dashboard will allow you to track the progress of your project as and when the employees update their status.");
+
+const userSteps = ['Create your Account', 'Receive assigned work', 'Notify status of the project to admin', 'Raise Issues'];
+const userStepMap = new Map();
+
+userStepMap.set(1, "First create your account under a given administrator.");
+userStepMap.set(2, "Access the projects that have been assigned to you. If you haven't received a project yet, contact your admin.");
+userStepMap.set(3, "When you work on the project, you can notify the administrator as well as the other users in your team about the status of the project.");
+userStepMap.set(4, "Whenever faced with trouble or errors, you can always go to the issues section and raise issues for the team to see them and resolve them.");
+
+export {userSteps,userStepMap,adminSteps,adminStepMap};

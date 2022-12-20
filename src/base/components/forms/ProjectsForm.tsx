@@ -2,7 +2,7 @@ import { ThemeProvider } from '@emotion/react'
 import { TaskAltRounded } from '@mui/icons-material'
 import { Button, createTheme, CssBaseline, Divider, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material'
 import { Box, Container } from '@mui/system'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Project, TechType } from '../../types';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -63,7 +63,7 @@ export default function ProjectsForm(props: ProjectsFormPropType) {
             },
             createdBy: user?.sub
         }
-        axios.post('http://localhost:4000/api/v1/projects', projectPayload)
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/projects`, projectPayload)
             .then(res => {
                 console.log(res.data.message);
                 toast.success('Project Added');
@@ -76,9 +76,6 @@ export default function ProjectsForm(props: ProjectsFormPropType) {
                 toast.error(err.message);
             })
     }
-    useEffect(() => {
-
-    }, [])
     return (
         <ThemeProvider theme={theme}>
             <Toaster />
