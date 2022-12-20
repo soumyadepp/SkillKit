@@ -21,7 +21,7 @@ export default function MainPage(props:MainPageProps) {
   const [role, setRole] = useState<string>("");
   const [propMetadata, setPropMetadata] = useState<UserDetailType>();
   const getUserMetadata = async () => {
-    const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+    const domain = "dev-aq0ru8q8.us.auth0.com"
     try {
 
       const accessToken = await getAccessTokenSilently({
