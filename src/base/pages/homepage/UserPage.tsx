@@ -5,8 +5,11 @@ import { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import UserDetails from '../../components/cards/UserDetails'
 import CommonPanel from '../../components/panels/CommonPanel'
-import { Project, UserDetailType } from '../../types'
+import { Data, Project, UserDetailType } from '../../types'
 import FullScreenLoader from '../../components/loaders/FullScreenLoader';
+import useFetch from '../../api/hooks/apiHooks'
+
+
 
 type UserPagePropType = {
     user: User;
@@ -21,23 +24,17 @@ type UserPagePropType = {
 export default function Userpage(props: UserPagePropType) {
     const { user, token, userMetadata, userDetails, picture } = props;
     const [projects, setProjects] = useState<Project[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const fetchAssignedProjects = () => {
-        axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/metadata/${user?.email}`)
-            .then((res) => {
-                console.log(res.data);
-                setProjects(res.data?.data.assignedProjects);
-            })
-            .catch(err => {
-                toast.error(err.message);
-            })
-    }
+    const [data, setData] = useState<Data | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
+    const { data: APIData, loading: APILoading, error: APIError } = useFetch({ url: `${process.env.REACT_APP_BACKEND_URL}/users/metadata/${user?.email}`, method: 'GET' });
     useEffect(() => {
-        setIsLoading(true);
-        fetchAssignedProjects();
-        setIsLoading(false);
-    }, [user, token])
-    if (isLoading) return <FullScreenLoader />
+        setData(APIData);
+        setLoading(APILoading);
+        setProjects(data?.data.assignedProjects);
+        setError(APIError);
+    }, [APIData, APILoading, APIError]);
+    
     return (
         <div>
             <Toaster />
@@ -51,8 +48,8 @@ export default function Userpage(props: UserPagePropType) {
                             designation={userDetails?.designation}
                             verified={user?.email_verified} />
                     </Box>
-                    <Container sx={{display: 'flex', alignItems: 'start', justifyContent: 'start' }}>
-                        <Box sx={{ my: 2}}>
+                    <Container sx={{ display: 'flex', alignItems: 'start', justifyContent: 'start' }}>
+                        <Box sx={{ my: 2 }}>
                             <CommonPanel
                                 token={token}
                                 skills={userMetadata?.skills || []}

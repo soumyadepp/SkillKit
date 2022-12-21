@@ -105,3 +105,8 @@ export type Project = {
     createdAt:string;
     updatedAt:string;
 }
+
+export interface Data{
+    data:any;
+    message:string;
+}

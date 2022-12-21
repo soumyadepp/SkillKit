@@ -126,12 +126,15 @@ export default function AdminPanel(props: AdminPanelPropType) {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Manage Projects" value="1" />
-            <Tab label="Team" value="2" />
+          <Tab label="Team" value="1" />
+            <Tab label="Manage Projects" value="2" />
             <Tab label="Issues" value="3" />
           </TabList>
         </Box>
         <TabPanel value="1">
+          <UserList/>
+        </TabPanel>
+        <TabPanel value="2">
           <Accordion expanded={expanded === 'panel-create'} onChange={handleExpandedChange('panel-create')}>
             <AccordionSummary expandIcon={<AddIcon sx={{color:'#1976d2'}}/>}
               aria-controls="panel1a-content"
@@ -183,7 +186,7 @@ export default function AdminPanel(props: AdminPanelPropType) {
                         </Box>
                         <Select
                           fullWidth
-                          value={status || ''}
+                          value={status}
                           hidden
                           onChange={(e) => {
                             setStatus(e.target.value);
@@ -214,9 +217,6 @@ export default function AdminPanel(props: AdminPanelPropType) {
               })}
             </AccordionDetails>
           </Accordion>
-        </TabPanel>
-        <TabPanel value="2">
-          <UserList/>
         </TabPanel>
         <TabPanel value="3">Item Three</TabPanel>
       </TabContext>

@@ -4,43 +4,50 @@ import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Avatar, Ch
 import { Box } from '@mui/system';
 import axios from 'axios';
 import { useEffect, useState } from 'react'
-import { Project, SkillType } from '../../types';
+import useFetch from '../../api/hooks/apiHooks';
+import { Data, Project, SkillType } from '../../types';
 import { designationMap } from '../../utils/common_data';
 import ComponentLoader from '../loaders/ComponentLoader';
 
 const baseApiURL = process.env.REACT_APP_BACKEND_URL;
+
 
 export default function UserList() {
     const { user } = useAuth0();
     const [searchUsers, setSearchUsers] = useState<any>();
     const [users, setUsers] = useState<any>();
     const [expanded, setExpanded] = useState<String | false>();
-    const [isLoading, setIsLoading] = useState(false);
     const [searchQueryUser, setSearchQueryUser] = useState<String>();
     const flatProps = {
         options: users?.filter((mappedUser: any) => mappedUser.user_email !== user?.email)?.map((u: any) => u.username || u.user_email)
     };
+    const { data: APIData, loading: APILoading, error: APIError } = useFetch({ url: `${baseApiURL}/users/metadata`, method: 'GET' });
+    const [data, setData] = useState<Data | null>();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<Error | null>();
+
     const handleExpandedChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
-    const fetchUsers = () => {
-        setIsLoading(true);
-        axios.get(`${baseApiURL}/users/metadata`)
-            .then((res) => {
-                setUsers(res.data?.data);
-            })
-        setIsLoading(false);
-    }
 
     useEffect(() => {
-        fetchUsers();
-        setSearchUsers(users);
-    }, [users]);
+        setData(APIData);
+        setUsers(data?.data);
+        setLoading(APILoading);
+        setError(APIError);
+        setSearchUsers(data?.data);
+    }, [APIData, APILoading, APIError]);
+
+    if (loading) return (
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+             <ComponentLoader />
+        </Box>
+    )
     return (
         <div>
             <Box sx={{ my: 1 }} display="flex" flexDirection="column" alignItems="center">
-                {users && <Autocomplete
+                <Autocomplete
                     {...flatProps}
                     disablePortal
                     value={searchQueryUser}
@@ -50,15 +57,15 @@ export default function UserList() {
                     id="user-search"
                     sx={{ width: '100%', mb: 2 }}
                     renderInput={(params: any) => <TextField {...params} label="Search User" />}
-                />}
-                {!isLoading && searchUsers && user && <List>
+                />
+                {searchUsers && user && <List>
                     {searchUsers.length === 0 && <Box display="flex" alignItems="center" justifyContent="center">
                         <Typography fontSize={15} color="primary">No users found.</Typography>
-                        </Box>}
-                    {searchUsers.filter((u:any) => searchQueryUser? u.username ? u.username === searchQueryUser: u.user_email === searchQueryUser : {}).map((listUser: any, index: any) => {
+                    </Box>}
+                    {searchUsers.filter((u: any) => searchQueryUser ? u.username ? u.username === searchQueryUser : u.user_email === searchQueryUser : {}).map((listUser: any, index: any) => {
                         if (listUser.user_email === user?.email) return;
                         return (
-                            <Accordion  key={listUser?.user_email} expanded={expanded === `p-${index + 1}`} onChange={handleExpandedChange(`p-${index + 1}`)}>
+                            <Accordion key={listUser?.user_email} expanded={expanded === `p-${index + 1}`} onChange={handleExpandedChange(`p-${index + 1}`)}>
                                 <AccordionSummary expandIcon={<ExpandMoreRounded />}
                                     aria-controls="panel1a-content"
                                     id="panel1a-header">
@@ -74,7 +81,7 @@ export default function UserList() {
                                     <Divider sx={{ mb: 2 }} />
                                     <Box sx={{ mx: 1 }} display="flex" alignItems="center" justifyContent="start">
                                         <Typography fontSize={15}>{listUser.fullName}</Typography>
-                                        <Chip sx={{ ml: 2}} label={designationMap.get(listUser.designation) || 'Unassigned'} />
+                                        <Chip sx={{ ml: 2 }} label={designationMap.get(listUser.designation) || 'Unassigned'} />
                                     </Box>
                                     {listUser.skills && <Box sx={{ my: 2, mx: 1 }}>
                                         <Typography sx={{ mb: 2 }} fontSize={18} color="primary">Skills</Typography>
@@ -93,28 +100,25 @@ export default function UserList() {
                                             </Box>}
                                         </Box>
                                     </Box>}
-                                    <Divider/>
-                                    {listUser.assignedProjects && <Box sx={{my:1,mx:1}}>
-                                            <Typography sx={{mb:2}} fontSize={18} color="primary">Assigned Projects</Typography>
-                                            <Box display="flex" alignItems="center" flexDirection="column">
-                                                {listUser.assignedProjects.map((assignedProject:Project)=>{
-                                                    return(
-                                                        <Box display="flex" alignItems="center" justifyContent="space-between" width="100%" key={assignedProject._id} sx={{my:1}}>
-                                                            <Typography fontSize={15}>{assignedProject.name}</Typography>
-                                                            <Chip label={assignedProject.deadline} color="error"/>
-                                                        </Box>
-                                                    )
-                                                })}
-                                            </Box>
+                                    <Divider />
+                                    {listUser.assignedProjects && <Box sx={{ my: 1, mx: 1 }}>
+                                        <Typography sx={{ mb: 2 }} fontSize={18} color="primary">Assigned Projects</Typography>
+                                        <Box display="flex" alignItems="center" flexDirection="column">
+                                            {listUser.assignedProjects.map((assignedProject: Project) => {
+                                                return (
+                                                    <Box display="flex" alignItems="center" justifyContent="space-between" width="100%" key={assignedProject._id} sx={{ my: 1 }}>
+                                                        <Typography fontSize={15}>{assignedProject.name}</Typography>
+                                                        <Chip label={assignedProject.deadline} color="error" />
+                                                    </Box>
+                                                )
+                                            })}
+                                        </Box>
                                     </Box>}
                                 </AccordionDetails>
                             </Accordion>
                         )
                     })}
                 </List>}
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                    {(isLoading || !users) && <ComponentLoader />}
-                </Box>
             </Box>
         </div>
     )

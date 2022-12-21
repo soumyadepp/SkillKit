@@ -10,7 +10,6 @@ import { options } from "./utils";
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
-import ComponentLoader from "../loaders/ComponentLoader";
 import { TaskAltOutlined } from "@mui/icons-material";
 import { SkillType } from "../../types";
 
@@ -33,20 +32,17 @@ export default function UserForm(props:UserFormPropType) {
     const handleRemove = (selectedList: any, selectedItem: SkillType) => {
         setSkills(selectedList);
     }
-
     const patchRequestOptions = {
         method: 'PATCH',
         url: `${baseApiURL}/users/${user?.sub}`,
         headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
         data: { user_metadata: { skills: skills } }
     }
-
     const mongoPatchRequestOptions = {
         method: 'PATCH',
         url: `${mongoApiURL}/users/metadata/skills/${user?.email}`,
         data: { skills: skills }
     }
-
     const handleSubmit = (e: any) => {
         e.preventDefault();
         axios.request(patchRequestOptions).then((res) => {
@@ -68,6 +64,7 @@ export default function UserForm(props:UserFormPropType) {
                 console.log(err);
             });
     }
+
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">

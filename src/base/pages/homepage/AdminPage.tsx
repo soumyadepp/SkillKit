@@ -1,11 +1,12 @@
 import { Box, Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import UserDetails from '../../components/cards/UserDetails'
-import { Project, User, UserDetailType } from '../../types'
+import { Data, Project, User, UserDetailType } from '../../types'
 import AdminPanel from '../../components/panels/AdminPanel'
-import toast, { Toaster } from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
+import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 import CommonPanel from '../../components/panels/CommonPanel'
-import axios from 'axios'
+import useFetch from '../../api/hooks/apiHooks'
 
 
 type AdminPagePropsType = {
@@ -19,21 +20,19 @@ type AdminPagePropsType = {
 
 export default function AdminPage(props: AdminPagePropsType) {
   const { user, token, userMetadata,userDetails,picture } = props;
-  const [projects,setProjects] = useState<Project[]>([]);
-  const fetchProjects = () => {
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/projects`)
-    .then((res) => {
-      setProjects(res.data?.data);
-      console.log(res.data?.data);
-    })
-    .catch(err => {
-      console.log(err);
-      toast.error(err.message);
-    })
-  }
+  const [projects,setProjects] = useState<Project[]>();
+  const {data:APIData,loading:APILoading,error:APIError} = useFetch({url:`${process.env.REACT_APP_BACKEND_URL}/projects`,method:'GET'});
+  const [data,setData] = useState<Data | null>();
+  const [error,setError] = useState<Error | null>();
+  const [loading,setLoading] = useState(false);
+
   useEffect(() => {
-    fetchProjects();
-  },[user,token]);
+    setData(APIData);
+    setLoading(APILoading);
+    setError(APIError);
+    if(data) setProjects(data?.data);
+  },[APIData,APILoading,APIError,user,token]);
+
   return (
     <React.Fragment>
       <Toaster />

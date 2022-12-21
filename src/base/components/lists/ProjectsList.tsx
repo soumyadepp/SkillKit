@@ -5,6 +5,7 @@ import { Project } from '../../types'
 import ComponentLoader from '../loaders/ComponentLoader';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ProjectAccordion from './ProjectAccordion';
+import { AccountBox } from '@mui/icons-material';
 
 type ProjectsListPropType = {
     projects?:Project[];
@@ -18,6 +19,10 @@ export default function ProjectsList(props: ProjectsListPropType) {
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
+    
+    if(projects?.length === 0) return <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+        <Typography fontSize={15}>No Data</Typography>
+    </Box>
     return (
         <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             <nav aria-label="skills list">
