@@ -10,10 +10,11 @@ import AddIcon from '@mui/icons-material/Add';
 import { Assignment, CheckCircleOutline, ManageHistory} from '@mui/icons-material';
 import AssignUsersForm from '../forms/AssignUsersForm';
 import axios from 'axios';
-import { Project } from '../../types';
+import { Data, Project } from '../../types';
 import toast from 'react-hot-toast';
 import Edit from '@mui/icons-material/Edit';
 import UserList from '../lists/UserList';
+import { colorMap, statusOptions } from '../../utils/common_data';
 
 type AdminPanelPropType = {
   token: string;
@@ -22,55 +23,7 @@ type AdminPanelPropType = {
 
 const baseApiURL = process.env.REACT_APP_BACKEND_URL;
 
-const statusOptions = [
-  {
-    name: 'Status Pending',
-    value: 'pending'
-  },
-  {
-    name: 'Design Phase',
-    value: 'design'
-  },
-  {
-    name: 'Development',
-    value: 'development'
-  },
-  {
-    name: 'Alpha Testing',
-    value: 'alpha_testing'
-  },
-  {
-    name: 'Beta Testing',
-    value: 'beta_testing'
-  },
-  {
-    name: 'Pre Release',
-    value: 'pre_release',
-  },
-  {
-    name: 'Released on Staging',
-    value: 'staging'
-  },
-  {
-    name: 'Pushed to Production',
-    value: 'production',
-  },
-  {
-    name: 'Closed',
-    value: 'closed',
-  }
-]
 
-const colorMap = new Map();
-colorMap.set('pending',['gray','#fff']);
-colorMap.set('design',['pink','#fff']);
-colorMap.set('development',['#1976d2','#fff']);
-colorMap.set('alpha_testing',['#d10023','#fff']);
-colorMap.set('beta_testing',['brown','#fff']);
-colorMap.set('pre_release',['violet','#fff']);
-colorMap.set('staging',['orange','#fff']);
-colorMap.set('production',['#000','#fff']);
-colorMap.set('closed',['green','#fff']);
 
 export default function AdminPanel(props: AdminPanelPropType) {
   const [value, setValue] = React.useState('1');
@@ -115,7 +68,6 @@ export default function AdminPanel(props: AdminPanelPropType) {
       toast.error(err.message);
     })
   }
-
 
   useEffect(() => {
     fetchProjects();

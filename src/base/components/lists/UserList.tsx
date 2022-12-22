@@ -65,7 +65,7 @@ export default function UserList() {
                     {searchUsers.filter((u: any) => searchQueryUser ? u.username ? u.username === searchQueryUser : u.user_email === searchQueryUser : {}).map((listUser: any, index: any) => {
                         if (listUser.user_email === user?.email) return;
                         return (
-                            <Accordion key={listUser?.user_email} expanded={expanded === `p-${index + 1}`} onChange={handleExpandedChange(`p-${index + 1}`)}>
+                            <Accordion key={listUser?.user_email} expanded={expanded === `p-${index + 1}`} onChange={handleExpandedChange(`p-${index + 1}`)} sx={{minWidth:'520px'}}>
                                 <AccordionSummary expandIcon={<ExpandMoreRounded />}
                                     aria-controls="panel1a-content"
                                     id="panel1a-header">

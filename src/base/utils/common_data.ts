@@ -81,6 +81,57 @@ designationMap.set('business_analyst', 'Business Analyst');
 designationMap.set('associate_software_engineer', 'ASE');
 designationMap.set('senior_software_engineer', 'SSE');
 
+export const statusOptions = [
+    {
+      name: 'Status Pending',
+      value: 'pending'
+    },
+    {
+      name: 'Design Phase',
+      value: 'design'
+    },
+    {
+      name: 'Development',
+      value: 'development'
+    },
+    {
+      name: 'Alpha Testing',
+      value: 'alpha_testing'
+    },
+    {
+      name: 'Beta Testing',
+      value: 'beta_testing'
+    },
+    {
+      name: 'Pre Release',
+      value: 'pre_release',
+    },
+    {
+      name: 'Released on Staging',
+      value: 'staging'
+    },
+    {
+      name: 'Pushed to Production',
+      value: 'production',
+    },
+    {
+      name: 'Closed',
+      value: 'closed',
+    }
+  ]
+
+  
+  const colorMap = new Map();
+  colorMap.set('pending',['gray','#fff']);
+  colorMap.set('design',['pink','#fff']);
+  colorMap.set('development',['#1976d2','#fff']);
+  colorMap.set('alpha_testing',['#d10023','#fff']);
+  colorMap.set('beta_testing',['brown','#fff']);
+  colorMap.set('pre_release',['violet','#fff']);
+  colorMap.set('staging',['orange','#fff']);
+  colorMap.set('production',['#000','#fff']);
+  colorMap.set('closed',['green','#fff']);
+
 
 const adminSteps = ['Create your Account', 'Create a new project', 'Assign users to project', 'Check progress'];
 const adminStepMap = new Map();
@@ -98,4 +149,5 @@ userStepMap.set(2, "Access the projects that have been assigned to you. If you h
 userStepMap.set(3, "When you work on the project, you can notify the administrator as well as the other users in your team about the status of the project.");
 userStepMap.set(4, "Whenever faced with trouble or errors, you can always go to the issues section and raise issues for the team to see them and resolve them.");
 
-export {userSteps,userStepMap,adminSteps,adminStepMap};
+export {userSteps,userStepMap,adminSteps,adminStepMap,colorMap};
+

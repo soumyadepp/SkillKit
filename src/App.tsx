@@ -9,6 +9,7 @@ import EditProfile from './base/pages/editProfile/EditProfile';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import ProjectPage from './base/pages/project/ProjectPage';
 
 const THEME = createTheme({
   typography: {
@@ -45,6 +46,7 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage picture={picture}/>} />
             <Route path="/edit" element={<EditProfile picture={picture}/>}/>
+            <Route path="/projects" element={<ProjectPage/>}/>
           </Routes>
         </div>
       </Router>

@@ -8,6 +8,8 @@ import CommonPanel from '../../components/panels/CommonPanel'
 import { Data, Project, UserDetailType } from '../../types'
 import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 import useFetch from '../../api/hooks/apiHooks'
+import UserPanel from '../../components/panels/UserPanel'
+import ComponentLoader from '../../components/loaders/ComponentLoader'
 
 
 
@@ -33,14 +35,13 @@ export default function Userpage(props: UserPagePropType) {
         setLoading(APILoading);
         setProjects(data?.data.assignedProjects);
         setError(APIError);
-    }, [APIData, APILoading, APIError]);
-    
+    }, [APIData, APILoading, APIError,projects,user,token]);
     return (
         <div>
             <Toaster />
             <Container sx={{ my: 10, display: 'flex', alignItems: 'start', justifyContent: 'space-evenly' }}>
                 <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-                    <Box sx={{ my: 2, display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+                    <Box sx={{ my: 2, ml: 2, display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
                         <UserDetails
                             username={userDetails?.username || user?.name}
                             name={userDetails?.fullName || user?.family_name}
@@ -48,7 +49,7 @@ export default function Userpage(props: UserPagePropType) {
                             designation={userDetails?.designation}
                             verified={user?.email_verified} />
                     </Box>
-                    <Container sx={{ display: 'flex', alignItems: 'start', justifyContent: 'start' }}>
+                    <Container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
                         <Box sx={{ my: 2 }}>
                             <CommonPanel
                                 token={token}
@@ -57,6 +58,9 @@ export default function Userpage(props: UserPagePropType) {
                         </Box>
                     </Container>
                 </Container>
+                <Box mt={2} width="100%" display="flex" alignItems="center" justifyContent="center">
+                    <UserPanel projects={projects} userMetadata={userDetails} />
+                </Box>
             </Container>
         </div>
     )

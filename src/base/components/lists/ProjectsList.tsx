@@ -5,7 +5,6 @@ import { Project } from '../../types'
 import ComponentLoader from '../loaders/ComponentLoader';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ProjectAccordion from './ProjectAccordion';
-import { AccountBox } from '@mui/icons-material';
 
 type ProjectsListPropType = {
     projects?:Project[];
@@ -20,8 +19,8 @@ export default function ProjectsList(props: ProjectsListPropType) {
             setExpanded(isExpanded ? panel : false);
         };
     
-    if(projects?.length === 0) return <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-        <Typography fontSize={15}>No Data</Typography>
+    if(projects?.length === 0) return <Box width="100%" display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+        <Typography fontSize={15}>No Projects Found.</Typography>
     </Box>
     return (
         <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>

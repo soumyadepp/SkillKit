@@ -64,7 +64,7 @@ export default function MainPage(props:MainPageProps) {
   },[APIData,APILoading,APIError,user,token]);
 
   if (!user || !isAuthenticated) return <LandingPage />
-  if (role === 'admin') return <AdminPage isAdmin={true} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} picture={picture} />
+  else if (role === 'admin') return <AdminPage isAdmin={true} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} picture={picture} />
   else if (role === 'user') return <Userpage isAdmin={false} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} picture={picture}/>
-  else return <FullScreenLoader text="Fetching User Data..." />
+  else return <FullScreenLoader text="Fetching Data..."/>
 }

@@ -131,7 +131,7 @@ function ResponsiveAppBar(props:HeaderProps) {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page.name}</Typography>
+                                    <Link to={page.link}><Typography textAlign="center">{page.name}</Typography></Link>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -158,6 +158,7 @@ function ResponsiveAppBar(props:HeaderProps) {
                     </Typography>
                     {!isLoading && user && <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
+                            <Link to={page.link} style={{textDecoration:'none'}}>
                             <Button
                                 key={page.name}
                                 onClick={handleCloseNavMenu}
@@ -165,6 +166,7 @@ function ResponsiveAppBar(props:HeaderProps) {
                             >
                                 {page.name}
                             </Button>
+                            </Link>
                         ))}
                     </Box>}
                     {!isLoading && !user && <Box sx={{ flexGrow: 0 }}>
