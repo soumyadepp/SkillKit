@@ -15,12 +15,6 @@ export default function ProjectPage() {
     const [error,setError] = useState<Error | null>();
     // const {data:APIData,loading:APILoading,error:APIError} = useFetch({url:`${process.env.REACT_APP_BACKEND_URL}/users/metadata/${user?.email}`,method:'GET'});
     const [rows,setRows] = useState<any>([]);
-    // useEffect(() => {
-    //     setData(APIData);
-    //     setRows(APIData?.data.assignedProjects);
-    //     setLoading(APILoading);
-    //     setError(APIError);
-    // },[APIData,APILoading,APIError]);
     
   if(loading) return <FullScreenLoader text="Fetching Projects..."/>
   return (
