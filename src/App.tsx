@@ -31,20 +31,6 @@ const THEME = createTheme({
 */
 
 export let MetaDataContext = createContext({});
-// export let FetchMetaDataContext = createContext((email:any) => {
-
-//   return new Promise(async(resolve, reject)=>{
-//     try{
-//       let a = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/metadata/${email}`,{method : "GET"});
-//       let b = await a.json();
-//       console.log(b);
-//       resolve(b.data.data);
-//     }
-//     catch(e){
-//       reject(e);
-//     }
-//   })
-// });
 
 function App() {
   const { user,isLoading } = useAuth0();
@@ -62,23 +48,16 @@ function App() {
   }
 
   async function updateMetaData(){
-
-    console.log("12332", user?.email);
+  
     if(!!user?.email&&!!!localStorage.getItem('user_metadata'))
     {
       try{
         let a = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/metadata/${user?.email}`,{method : "GET"});
         let b = await a.json();
-        // resolve(b.data.data);
+   
         console.warn("Hello world", b.data);
         localStorage.setItem('user_metadata',JSON.stringify(b.data));
         setMetaData(b.data);
-        // if(JSON.stringify(metaData)!==JSON.stringify(b.data))
-        // {
-        //   setMetaData(b.data);
-        //   setPicture(b?.picture);
-        // }
-  
       }
       catch(e){
         // reject(e);
@@ -86,16 +65,12 @@ function App() {
     }
     else if(!!localStorage.getItem('user_metadata'))
     {
-      console.log(JSON.stringify(metaData)===localStorage.getItem('user_metadata'));
       if(JSON.stringify(metaData)!==JSON.stringify(JSON.parse(localStorage.getItem('user_metadata')||'')))
       {
         setMetaData(JSON.parse(localStorage.getItem('user_metadata')||''));
-        console.warn("Hello world 1");
       }
     }
   }
-
-  // setInterval(,5000);
 
   useEffect(() => {
     console.warn(user?.email);
@@ -104,7 +79,6 @@ function App() {
   },[user])
   if (isLoading) return <FullScreenLoader text='Please wait a moment...' />
   return (
-    // <FetchMetaDataContext.Provider value={metaDataFun}>
       <MetaDataContext.Provider value={metaData}>
         <ThemeProvider theme={THEME}>
           <Router>
@@ -119,7 +93,6 @@ function App() {
           </Router>
         </ThemeProvider>
       </MetaDataContext.Provider>
-    // {/* </FetchMetaDataContext.Provider> */}
   );
 }
 
