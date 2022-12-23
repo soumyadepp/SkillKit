@@ -23,10 +23,6 @@ type UserFormPropType = {
     updateMetaData : Function
 }
 
-/*
-    Need to make changes in this file.
-*/
-
 export default function UserForm(props:UserFormPropType) {
     const { user } = useAuth0();
     const {token} = props;
@@ -62,10 +58,6 @@ export default function UserForm(props:UserFormPropType) {
                     console.log(err);
                 })
             toast.success('Successfully Updated.')
-            // localStorage.removeItem('user_metadata');
-            // setTimeout(() => {
-            //     window.location.reload();
-            // }, 1500);
         })
             .catch((err) => {
                 toast.error(err.message);
