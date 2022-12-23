@@ -33,13 +33,6 @@ export default function Userpage(props: UserPagePropType) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
     // const { data: APIData, loading: APILoading, error: APIError } = useFetch({ url: `${process.env.REACT_APP_BACKEND_URL}/users/metadata/${user?.email}`, method: 'GET' });
-    // const metaData = useContext(MetaDataContext);
-    useEffect(() => {
-        // setData(APIData);
-        // setLoading(APILoading);
-        // setProjects(APIData?.data?.assignedProjects);
-        // setError(APIError);
-    }, [projects,user,token]);
 
     return (
         <div>
