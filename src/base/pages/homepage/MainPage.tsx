@@ -60,20 +60,6 @@ export default function MainPage(props:MainPageProps) {
   }, [getAccessTokenSilently, user?.sub]);
   //end of auth0 function *** Don't change this *** 
 
-  useEffect(() => {
-
-    // console.log(propMetadata);
-    if(JSON.stringify(propMetadata)===JSON.stringify({}))
-    {
-      // fetchMetaData(user?.email);
-    }
-
-    // setData(APIData);
-    // // setPropMetadata(data?.data);
-    // console.log(propMetadata," Hell", user?.email);
-    // setLoading(APILoading);
-    // setError(APIError);
-  },[user,token]);
 
   if (!user || !isAuthenticated) return <LandingPage />
   else if (role === 'admin') return <AdminPage updateMetaData={props.updateMetaData} isAdmin={true} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} picture={picture} />
