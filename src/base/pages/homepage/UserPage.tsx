@@ -10,6 +10,8 @@ import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 import useFetch from '../../api/hooks/apiHooks'
 import UserPanel from '../../components/panels/UserPanel'
 import ComponentLoader from '../../components/loaders/ComponentLoader'
+import { MetaDataContext } from '../../../App'
+import {useContext} from 'react';
 
 
 
@@ -30,13 +32,15 @@ export default function Userpage(props: UserPagePropType) {
     const [data, setData] = useState<Data | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
-    const { data: APIData, loading: APILoading, error: APIError } = useFetch({ url: `${process.env.REACT_APP_BACKEND_URL}/users/metadata/${user?.email}`, method: 'GET' });
+    // const { data: APIData, loading: APILoading, error: APIError } = useFetch({ url: `${process.env.REACT_APP_BACKEND_URL}/users/metadata/${user?.email}`, method: 'GET' });
+    // const metaData = useContext(MetaDataContext);
     useEffect(() => {
-        setData(APIData);
-        setLoading(APILoading);
-        setProjects(data?.data.assignedProjects);
-        setError(APIError);
-    }, [APIData, APILoading, APIError,projects,user,token]);
+        // setData(APIData);
+        // setLoading(APILoading);
+        // setProjects(APIData?.data?.assignedProjects);
+        // setError(APIError);
+    }, [projects,user,token]);
+
     return (
         <div>
             <Toaster />
@@ -54,7 +58,7 @@ export default function Userpage(props: UserPagePropType) {
                         <Box sx={{ my: 2 }}>
                             <CommonPanel
                                 token={token}
-                                skills={userMetadata?.skills || []}
+                                skills={userDetails?.skills || []}
                                 projects={projects}
                                 updateMetaData={props.updateMetaData} />
                         </Box>
