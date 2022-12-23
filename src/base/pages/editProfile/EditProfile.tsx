@@ -87,8 +87,6 @@ export default function EditProfile(props:EditProfileProps) {
     }
     const fetchUserMetadata = () => {
         setIsLoading(true);
-        // axios.get(`${baseApiURL}/users/metadata/${user?.email}`)
-            // .then((res) => {
                 console.log(userMetaData);
                 setFormUsername(userMetaData?.username);
                 setFormFullName(userMetaData?.fullName);
@@ -99,10 +97,6 @@ export default function EditProfile(props:EditProfileProps) {
                 setFormCity(userMetaData?.address?.city);
                 setFormState(userMetaData?.address?.state);
                 setFormPincode(userMetaData?.address?.pincode);
-            // })
-            // .catch(err => {
-                // console.log(err);
-            // })
         setIsLoading(false);
     }
 
