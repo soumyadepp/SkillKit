@@ -197,7 +197,7 @@ function ResponsiveAppBar(props:HeaderProps) {
                             {settings.map((setting) => (
                                 setting?.name !== 'Logout' ? <Link key={setting.name} style={{textDecoration:'none',color:'#000'}} to={setting.link}><MenuItem key={setting.name} onClick={handleCloseUserMenu}>
                                     <Typography textAlign="center">{setting.name}</Typography>
-                                </MenuItem></Link> : <MenuItem key={setting.name} onClick={() => logout()}>
+                                </MenuItem></Link> : <MenuItem key={setting.name} onClick={() => {logout(); localStorage.removeItem('user_metadata')}}>
                                     {setting.name}
                                 </MenuItem>
                             ))}

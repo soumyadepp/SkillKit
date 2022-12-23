@@ -15,6 +15,7 @@ type AdminPagePropsType = {
   userMetadata: any;
   userDetails?: UserDetailType;
   isAdmin: boolean;
+  updateMetaData : Function
   picture?:string;
 }
 
@@ -30,7 +31,7 @@ export default function AdminPage(props: AdminPagePropsType) {
     setData(APIData);
     setLoading(APILoading);
     setError(APIError);
-    if(data) setProjects(data?.data);
+    if(APIData) setProjects(APIData?.data);
   },[APIData,APILoading,APIError,user,token]);
 
   return (
@@ -51,9 +52,10 @@ export default function AdminPage(props: AdminPagePropsType) {
           </Box>
           <Box sx={{ my: 2, display: 'flex', alignItems: 'start', justifyContent: 'start' }}>
             <CommonPanel 
+            updateMetaData = {props.updateMetaData}
             isAdmin={true} 
             token={token} 
-            skills={userMetadata?.skills || []} 
+            skills={userDetails?.skills || []} 
             projects={projects}/>
           </Box>
         </Container>

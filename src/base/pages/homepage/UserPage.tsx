@@ -20,6 +20,7 @@ type UserPagePropType = {
     userDetails?: UserDetailType;
     isAdmin: boolean;
     picture?: string;
+    updateMetaData : Function
 }
 
 
@@ -54,7 +55,8 @@ export default function Userpage(props: UserPagePropType) {
                             <CommonPanel
                                 token={token}
                                 skills={userMetadata?.skills || []}
-                                projects={projects} />
+                                projects={projects}
+                                updateMetaData={props.updateMetaData} />
                         </Box>
                     </Container>
                 </Container>

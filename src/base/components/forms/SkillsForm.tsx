@@ -20,7 +20,12 @@ const mongoApiURL = process.env.REACT_APP_BACKEND_URL;
 type UserFormPropType = {
     skills: SkillType[];
     token: string;
+    updateMetaData : Function
 }
+
+/*
+    Need to make changes in this file.
+*/
 
 export default function UserForm(props:UserFormPropType) {
     const { user } = useAuth0();
@@ -49,15 +54,18 @@ export default function UserForm(props:UserFormPropType) {
             console.log(res);
             axios.request(mongoPatchRequestOptions).then((res2) => {
                 console.log(res2);
+                localStorage.removeItem('user_metadata');
+                props.updateMetaData();
             })
                 .catch(err => {
                     toast.error(err.message);
                     console.log(err);
                 })
             toast.success('Successfully Updated.')
-            setTimeout(() => {
-                window.location.reload();
-            }, 1500);
+            // localStorage.removeItem('user_metadata');
+            // setTimeout(() => {
+            //     window.location.reload();
+            // }, 1500);
         })
             .catch((err) => {
                 toast.error(err.message);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
 import AdminPage from './AdminPage';
 import Userpage from './UserPage';
@@ -6,11 +6,13 @@ import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 import LandingPage from '../LandingPage';
 import { Data, UserDetailType } from '../../types';
 import useFetch from '../../api/hooks/apiHooks';
+import { MetaDataContext } from '../../../App';
 
 
 const baseApiURL = process.env.REACT_APP_BACKEND_URL;
 type MainPageProps = {
   picture?:string;
+  updateMetaData : Function
 }
 
 export default function MainPage(props:MainPageProps) {
@@ -19,8 +21,10 @@ export default function MainPage(props:MainPageProps) {
   const [userMetadata, setUserMetadata] = useState<any>(null);
   const [token, setToken] = useState<string>("");
   const [role, setRole] = useState<string>("");
-  const [propMetadata, setPropMetadata] = useState<UserDetailType>();
-  const {data:APIData,loading:APILoading,error:APIError} = useFetch({url:`${baseApiURL}/users/metadata/${user?.email}`,method:'GET'});
+  // const [propMetadata, setPropMetadata] = useState<UserDetailType>();
+  const propMetadata = useContext(MetaDataContext);
+  // const {data:APIData,loading:APILoading,error:APIError} = useFetch({url:`${baseApiURL}/users/metadata/${user?.email}`,method:'GET'});
+  // const fetchMetaData = useContext(FetchMetaDataContext);
   const [data, setData] = useState<Data | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -57,14 +61,22 @@ export default function MainPage(props:MainPageProps) {
   //end of auth0 function *** Don't change this *** 
 
   useEffect(() => {
-    setData(APIData);
-    setPropMetadata(data?.data);
-    setLoading(APILoading);
-    setError(APIError);
-  },[APIData,APILoading,APIError,user,token]);
+
+    // console.log(propMetadata);
+    if(JSON.stringify(propMetadata)===JSON.stringify({}))
+    {
+      // fetchMetaData(user?.email);
+    }
+
+    // setData(APIData);
+    // // setPropMetadata(data?.data);
+    // console.log(propMetadata," Hell", user?.email);
+    // setLoading(APILoading);
+    // setError(APIError);
+  },[user,token]);
 
   if (!user || !isAuthenticated) return <LandingPage />
-  else if (role === 'admin') return <AdminPage isAdmin={true} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} picture={picture} />
-  else if (role === 'user') return <Userpage isAdmin={false} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} picture={picture}/>
+  else if (role === 'admin') return <AdminPage updateMetaData={props.updateMetaData} isAdmin={true} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} picture={picture} />
+  else if (role === 'user') return <Userpage updateMetaData={props.updateMetaData} isAdmin={false} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} picture={picture}/>
   else return <FullScreenLoader text="Fetching Data..."/>
 }

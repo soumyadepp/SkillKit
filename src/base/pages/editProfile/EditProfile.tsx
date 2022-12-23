@@ -4,17 +4,19 @@ import { TaskAltRounded } from '@mui/icons-material';
 import { Avatar, Box, Button, Chip, createTheme, CssBaseline, Divider, FormControl, MenuItem, Select, TextField, Tooltip, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 import axios from 'axios';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import { designationMap,desigations } from '../../utils/common_data';
 import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 import ImageUpload from '../../components/forms/imageUpload/ImageUpload';
+import { MetaDataContext } from '../../../App';
 const theme = createTheme();
 
 const baseApiURL = process.env.REACT_APP_BACKEND_URL;
 
 type EditProfileProps = {
     picture?:string;
+    updateMetaData : Function
 }
 
 export default function EditProfile(props:EditProfileProps) {
@@ -30,6 +32,8 @@ export default function EditProfile(props:EditProfileProps) {
     const [formFullName, setFormFullName] = useState<any>('');
     const [formUsername, setFormUsername] = useState<any>('');
     const [isLoading,setIsLoading] = useState(false);
+    const userMeta : any = useContext(MetaDataContext);
+    const [userMetaData, setUserMetaData] = useState<any>(null);
 
     const handleSubmitBasicDetails = () => {
         if (user && formDesignation && formFullName && formUsername) {
@@ -41,6 +45,9 @@ export default function EditProfile(props:EditProfileProps) {
                 .then((res) => {
                     toast.success(res.data?.message);
                     console.log(res.data?.data);
+                    localStorage.removeItem('user_metadata');
+                    setUserMetaData(null);
+                    props.updateMetaData();
                 })
                 .catch(err => {
                     console.log(err);
@@ -68,6 +75,9 @@ export default function EditProfile(props:EditProfileProps) {
                 .then((res) => {
                     console.log(res.data?.data);
                     toast.success(res.data?.message);
+                    localStorage.removeItem('user_metadata');
+                    setUserMetaData(null);
+                    props.updateMetaData();
                 })
                 .catch(err => {
                     console.log(err);
@@ -77,27 +87,34 @@ export default function EditProfile(props:EditProfileProps) {
     }
     const fetchUserMetadata = () => {
         setIsLoading(true);
-        axios.get(`${baseApiURL}/users/metadata/${user?.email}`)
-            .then((res) => {
-                console.log(res.data?.data);
-                setFormUsername(res.data?.data?.username);
-                setFormFullName(res.data?.data?.fullName);
-                setFormDesignation(res.data?.data?.designation);
-                setFormStreet(res.data?.data?.address?.street);
-                setFormLine1(res.data?.data?.address?.line1);
-                setFormLine2(res.data?.data?.address?.line2);
-                setFormCity(res.data?.data?.address?.city);
-                setFormState(res.data?.data?.address?.state);
-                setFormPincode(res.data?.data?.address?.pincode);
-            })
-            .catch(err => {
-                console.log(err);
-            })
+        // axios.get(`${baseApiURL}/users/metadata/${user?.email}`)
+            // .then((res) => {
+                console.log(userMetaData);
+                setFormUsername(userMetaData?.username);
+                setFormFullName(userMetaData?.fullName);
+                setFormDesignation(userMetaData?.designation);
+                setFormStreet(userMetaData?.address?.street);
+                setFormLine1(userMetaData?.address?.line1);
+                setFormLine2(userMetaData?.address?.line2);
+                setFormCity(userMetaData?.address?.city);
+                setFormState(userMetaData?.address?.state);
+                setFormPincode(userMetaData?.address?.pincode);
+            // })
+            // .catch(err => {
+                // console.log(err);
+            // })
         setIsLoading(false);
     }
+
+    useEffect(()=>{
+        if(userMetaData!==null)
+            fetchUserMetadata();
+    }, [userMetaData]);
+
     useEffect(() => {
-        fetchUserMetadata();
-    }, [])
+        if(userMetaData===null)
+            setUserMetaData(userMeta);
+    }, [userMeta])
     if(isLoading) return <FullScreenLoader/>
     return (
         <div>

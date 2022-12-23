@@ -15,6 +15,7 @@ import { BackpackRounded } from '@mui/icons-material';
 type ListPropType = {
   skills: SkillType[];
   token:string;
+  updateMetaData : Function;
 }
 
 
@@ -106,7 +107,7 @@ export default function SkillList(props: ListPropType) {
         >
           <Fade in={open}>
             <Box sx={style}>
-              <SkillsForm token={token} skills={skills}/>
+              <SkillsForm token={token} skills={skills} updateMetaData={props.updateMetaData}/>
             </Box>
           </Fade>
         </Modal>

@@ -13,6 +13,7 @@ type PanelPropType = {
   projects?: any;
   token:string;
   isAdmin?:boolean;
+  updateMetaData : Function
 }
 
 export default function CommonPanel(props:PanelPropType) {
@@ -34,7 +35,7 @@ export default function CommonPanel(props:PanelPropType) {
           <ProjectsList projects={projects}/>
         </TabPanel>
         <TabPanel value="2">
-          <SkillList token={token} skills={skills}/>
+          <SkillList token={token} skills={skills} updateMetaData={props.updateMetaData}/>
         </TabPanel>
       </TabContext>
     </Box>

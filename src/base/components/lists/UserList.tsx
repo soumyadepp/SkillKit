@@ -33,10 +33,10 @@ export default function UserList() {
 
     useEffect(() => {
         setData(APIData);
-        setUsers(data?.data);
+        setUsers(APIData?.data);
         setLoading(APILoading);
         setError(APIError);
-        setSearchUsers(data?.data);
+        setSearchUsers(APIData?.data);
     }, [APIData, APILoading, APIError]);
 
     if (loading) return (
