@@ -68,6 +68,7 @@ export type UserDetailType = {
     designation?: string;
     skills?: [SkillType];
     address?: UserAddress;
+    picture?:string;
   }
 
 export type UserAddress = {

@@ -36,7 +36,6 @@ function App() {
   const { user,isLoading } = useAuth0();
   const [picture,setPicture] = useState<string>();
   const [metaData, setMetaData] = useState<any>();
-  // const metaDataFun = useContext(FetchMetaDataContext);
   const fetchUserProfilePicture = () => {
     axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/metadata/${user?.email}`)
     .then((res) => {
@@ -46,7 +45,6 @@ function App() {
       console.log(err);
     });
   }
-
   async function updateMetaData(){
   
     if(!!user?.email&&!!!localStorage.getItem('user_metadata'))
@@ -54,13 +52,12 @@ function App() {
       try{
         let a = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/metadata/${user?.email}`,{method : "GET"});
         let b = await a.json();
-   
         console.warn("Hello world", b.data);
         localStorage.setItem('user_metadata',JSON.stringify(b.data));
         setMetaData(b.data);
       }
       catch(e){
-        // reject(e);
+        console.log(e);
       }
     }
     else if(!!localStorage.getItem('user_metadata'))

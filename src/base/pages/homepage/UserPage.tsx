@@ -1,17 +1,12 @@
 import { User } from '@auth0/auth0-react'
 import { Box, Container } from '@mui/system'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
+import { useState } from 'react'
+import { Toaster } from 'react-hot-toast'
 import UserDetails from '../../components/cards/UserDetails'
 import CommonPanel from '../../components/panels/CommonPanel'
 import { Data, Project, UserDetailType } from '../../types'
-import FullScreenLoader from '../../components/loaders/FullScreenLoader';
-import useFetch from '../../api/hooks/apiHooks'
 import UserPanel from '../../components/panels/UserPanel'
-import ComponentLoader from '../../components/loaders/ComponentLoader'
-import { MetaDataContext } from '../../../App'
-import {useContext} from 'react';
 
 
 

@@ -4,8 +4,6 @@ import AdminPage from './AdminPage';
 import Userpage from './UserPage';
 import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 import LandingPage from '../LandingPage';
-import { Data, UserDetailType } from '../../types';
-import useFetch from '../../api/hooks/apiHooks';
 import { MetaDataContext } from '../../../App';
 
 
@@ -21,13 +19,7 @@ export default function MainPage(props:MainPageProps) {
   const [userMetadata, setUserMetadata] = useState<any>(null);
   const [token, setToken] = useState<string>("");
   const [role, setRole] = useState<string>("");
-  // const [propMetadata, setPropMetadata] = useState<UserDetailType>();
   const propMetadata = useContext(MetaDataContext);
-  // const {data:APIData,loading:APILoading,error:APIError} = useFetch({url:`${baseApiURL}/users/metadata/${user?.email}`,method:'GET'});
-  // const fetchMetaData = useContext(FetchMetaDataContext);
-  const [data, setData] = useState<Data | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
 
   //auth0 function
   const getUserMetadata = async () => {
