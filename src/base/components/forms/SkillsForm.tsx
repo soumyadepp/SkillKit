@@ -57,7 +57,7 @@ export default function UserForm(props:UserFormPropType) {
                     toast.error(err.message);
                     console.log(err);
                 })
-            toast.success('Successfully Updated.')
+            toast.success('Successfully Updated.');
         })
             .catch((err) => {
                 toast.error(err.message);

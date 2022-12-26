@@ -17,7 +17,6 @@ const theme = createTheme();
 const baseApiURL = process.env.REACT_APP_BACKEND_URL;
 
 
-
 export default function AssignUsersForm() {
     const { user } = useAuth0();
     const [projects, setProjects] = useState<Project[]>([]);
@@ -79,7 +78,10 @@ export default function AssignUsersForm() {
             userToUnassign: userToUnassign
         })
             .then((res) => {
-                console.log(res.data?.data);
+                if(res.status == 400){
+                    toast.error(res.data?.message);
+                    return;
+                }
                 toast.success(res.data?.message);
                 setTimeout(() => {
                     window.location.reload();
@@ -97,8 +99,11 @@ export default function AssignUsersForm() {
         console.log(idList);
         axios.put(`${baseApiURL}/projects/assign/${project?._id}`, { assignedUsers: idList })
             .then((res) => {
-                console.log(res.data);
-                toast.success('Updated successfully');
+                if(res.status == 400){
+                    toast.error(res.data?.message);
+                    return;
+                }
+                toast.success(res.data?.message);
                 setTimeout(() => {
                     window.location.reload();
                 }, 1500);
@@ -172,7 +177,7 @@ export default function AssignUsersForm() {
                                                 <Box display="flex" flexDirection="column" alignItems="center">
                                                     <Typography mt={2} variant="h5" fontWeight={600}>Unassign User</Typography>
                                                     <Divider/>
-                                                    <Typography m={2} fontSize={20}>Are you sure you want to unassign {assignedUser} from {project.name}?</Typography>
+                                                    <Typography m={2} fontSize={20}>Are you sure you want to unassign this user from {project.name}?</Typography>
                                                     <Box p={3} display="flex" alignItems="center" justifyContent="space-evenly">
                                                         <Button sx={{mx:1}} variant="contained" onClick={e => handleUnassign(e, project, assignedUser)}>Yes</Button>
                                                         <Button sx={{mx:1}} variant="contained" color="error" onClick={() => setOpenDialog(false)}>No</Button>

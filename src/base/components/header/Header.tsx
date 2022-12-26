@@ -78,11 +78,11 @@ function ResponsiveAppBar(props:HeaderProps) {
         console.log(user);
     }
     return (
-        <AppBar position="fixed" color="primary">
-            <Container maxWidth="xl">
+        <AppBar position="fixed" color="inherit" sx={{boxShadow:'none',borderBottom:'1px solid #ddd'}}>
+            <Container maxWidth="xl" >
                 <Toolbar disableGutters sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Container sx={{display:'flex',alignItems:'center'}}>
-                        <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                        <AdbIcon sx={{ display: { xs: 'none', md: 'flex',color:'#1976d2' }, mr: 1 }} />
                         <Typography
                             variant="h4"
                             noWrap
@@ -93,7 +93,7 @@ function ResponsiveAppBar(props:HeaderProps) {
                                 display: { xs: 'none', md: 'flex' },
                                 fontWeight: 600,
                                 letterSpacing: '.2rem',
-                                color: 'inherit',
+                                color: '#1976d2',
                                 textDecoration: 'none',
                             }}
                         >
@@ -161,8 +161,10 @@ function ResponsiveAppBar(props:HeaderProps) {
                             <Link to={page.link} style={{textDecoration:'none'}}>
                             <Button
                                 key={page.name}
+                                color="primary"
+                                variant="outlined"
                                 onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block',mx:1}}
+                                sx={{ my: 2, color: '#1976d2', display: 'block',mx:1}}
                             >
                                 {page.name}
                             </Button>
@@ -170,7 +172,7 @@ function ResponsiveAppBar(props:HeaderProps) {
                         ))}
                     </Box>}
                     {!isLoading && !user && <Box sx={{ flexGrow: 0 }}>
-                        <Button onClick={() => loginWithRedirect()} sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button>
+                        <Button variant='contained' onClick={() => loginWithRedirect()} sx={{ my: 2, display: 'block' }}>Login</Button>
                     </Box>}
                     {!isLoading && user && <Box sx={{ display: 'flex', flexGrow: 0 }}>
                         <Tooltip title="Open settings">

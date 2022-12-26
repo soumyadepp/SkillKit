@@ -7,7 +7,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import ProjectsForm from '../forms/ProjectsForm';
 import { Accordion, AccordionDetails, AccordionSummary, Button, Chip, MenuItem, Select, Tooltip, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { Assignment, CheckCircleOutline, ManageHistory} from '@mui/icons-material';
+import { Assignment, CheckCircleOutline, ManageAccountsOutlined, ManageHistory} from '@mui/icons-material';
 import AssignUsersForm from '../forms/AssignUsersForm';
 import axios from 'axios';
 import { Data, Project } from '../../types';
@@ -18,6 +18,7 @@ import { colorMap, statusOptions } from '../../utils/common_data';
 
 type AdminPanelPropType = {
   token: string;
+  updateMetadata:Function;
 }
 
 
@@ -104,14 +105,14 @@ export default function AdminPanel(props: AdminPanelPropType) {
               <Typography fontSize={16} fontWeight={500}>Assign Users</Typography>
             </AccordionSummary>
             <AccordionDetails >
-              <AssignUsersForm />
+              <AssignUsersForm/>
             </AccordionDetails>
           </Accordion>
           <Accordion expanded={expanded === 'status-panel'} onChange={handleExpandedChange('status-panel')}>
-            <AccordionSummary expandIcon={<ManageHistory sx={{color:'#1976d2'}}/>}
+            <AccordionSummary expandIcon={<ManageAccountsOutlined sx={{color:'#1976d2'}}/>}
               aria-controls="panel1a-content"
               id="panel1a-header">
-              <Tooltip title="You can update the status of your project here">
+              <Tooltip title="Update the status of your project here">
                 <Typography fontSize={16} fontWeight={500}>Milestones</Typography>
               </Tooltip>
             </AccordionSummary>

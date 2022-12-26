@@ -1,12 +1,13 @@
 import { User } from '@auth0/auth0-react'
 import { Box, Container } from '@mui/system'
 import axios from 'axios'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import UserDetails from '../../components/cards/UserDetails'
 import CommonPanel from '../../components/panels/CommonPanel'
 import { Data, Project, UserDetailType } from '../../types'
 import UserPanel from '../../components/panels/UserPanel'
+import useFetch from '../../api/hooks/apiHooks'
 
 
 
@@ -22,13 +23,19 @@ type UserPagePropType = {
 
 
 export default function Userpage(props: UserPagePropType) {
-    const { user, token, userMetadata, userDetails, picture } = props;
+    const { user, token, userMetadata, userDetails, picture,updateMetaData } = props;
     const [projects, setProjects] = useState<Project[]>([]);
     const [data, setData] = useState<Data | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
-    // const { data: APIData, loading: APILoading, error: APIError } = useFetch({ url: `${process.env.REACT_APP_BACKEND_URL}/users/metadata/${user?.email}`, method: 'GET' });
-
+    const { data: APIData, loading: APILoading, error: APIError } = useFetch({ url: `${process.env.REACT_APP_BACKEND_URL}/users/metadata/${user?.email}`, method: 'GET' });
+    useEffect(() => {
+        setData(APIData);
+        setProjects(data?.data?.assignedProjects);
+        setLoading(APILoading);
+        setError(APIError);
+        updateMetaData();
+    },[APIData,APILoading,APIError]);
     return (
         <div>
             <Toaster />

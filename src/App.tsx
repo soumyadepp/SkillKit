@@ -8,9 +8,8 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import EditProfile from './base/pages/editProfile/EditProfile';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import toast from 'react-hot-toast';
 import ProjectPage from './base/pages/project/ProjectPage';
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
 const THEME = createTheme({
   typography: {

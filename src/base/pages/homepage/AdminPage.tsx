@@ -59,7 +59,7 @@ export default function AdminPage(props: AdminPagePropsType) {
             projects={projects}/>
           </Box>
         </Container>
-        <AdminPanel token={token} />
+        <AdminPanel token={token} updateMetadata={props.updateMetaData}/>
       </Container>
     </React.Fragment>
   )

@@ -1,4 +1,4 @@
-import { Fab, Paper, Tooltip, Typography } from '@mui/material';
+import { Button, Fab, Paper, Tooltip, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { SkillType } from '../../types';
 import Modal from '@mui/material/Modal';
@@ -64,7 +64,7 @@ const style = {
 
 
 export default function SkillList(props: ListPropType) {
-  const { skills,token} = props;
+  const { skills,token,updateMetaData} = props;
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
@@ -107,7 +107,10 @@ export default function SkillList(props: ListPropType) {
         >
           <Fade in={open}>
             <Box sx={style}>
-              <SkillsForm token={token} skills={skills} updateMetaData={props.updateMetaData}/>
+              <SkillsForm token={token} skills={skills} updateMetaData={updateMetaData}/>
+              <Box px={3}>
+              <Button fullWidth variant='contained' color="error" onClick={handleClose}>Close</Button>
+              </Box>
             </Box>
           </Fade>
         </Modal>
