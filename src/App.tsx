@@ -34,6 +34,7 @@ export let MetaDataContext = createContext({});
 
 function App() {
   const { user,isLoading } = useAuth0();
+  const [loading, setLoading] = useState(true);
   const [picture,setPicture] = useState<string>();
   const [metaData, setMetaData] = useState<any>();
   const fetchUserProfilePicture = () => {
@@ -53,7 +54,7 @@ function App() {
         let a = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/metadata/${user?.email}`,{method : "GET"});
         let b = await a.json();
         console.warn("Hello world", b.data);
-        localStorage.setItem('user_metadata',JSON.stringify(b.data));
+        // localStorage.setItem('user_metadata',JSON.stringify(b.data));
         setMetaData(b.data);
       }
       catch(e){
@@ -67,14 +68,17 @@ function App() {
         setMetaData(JSON.parse(localStorage.getItem('user_metadata')||''));
       }
     }
+
+    setLoading(false);
   }
 
   useEffect(() => {
+    setLoading(true);
     console.warn(user?.email);
     updateMetaData();
     fetchUserProfilePicture();
   },[user])
-  if (isLoading) return <FullScreenLoader text='Please wait a moment...' />
+  if (isLoading || loading) return <FullScreenLoader text='Please wait a moment...' />
   return (
       <MetaDataContext.Provider value={metaData}>
         <ThemeProvider theme={THEME}>

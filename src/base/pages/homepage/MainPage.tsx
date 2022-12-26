@@ -5,6 +5,7 @@ import Userpage from './UserPage';
 import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 import LandingPage from '../LandingPage';
 import { MetaDataContext } from '../../../App';
+import { Navigate } from 'react-router-dom';
 
 
 const baseApiURL = process.env.REACT_APP_BACKEND_URL;
@@ -19,7 +20,7 @@ export default function MainPage(props:MainPageProps) {
   const [userMetadata, setUserMetadata] = useState<any>(null);
   const [token, setToken] = useState<string>("");
   const [role, setRole] = useState<string>("");
-  const propMetadata = useContext(MetaDataContext);
+  const propMetadata : any = useContext(MetaDataContext);
 
   //auth0 function
   const getUserMetadata = async () => {
@@ -54,6 +55,8 @@ export default function MainPage(props:MainPageProps) {
 
 
   if (!user || !isAuthenticated) return <LandingPage />
+  else if(!!!propMetadata) return <FullScreenLoader text="Fetching Data..."/>
+  else if(!!!propMetadata?.username || !!!propMetadata?.fullName) return <Navigate to={"/edit"}/>
   else if (role === 'admin') return <AdminPage updateMetaData={props.updateMetaData} isAdmin={true} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} picture={picture} />
   else if (role === 'user') return <Userpage updateMetaData={props.updateMetaData} isAdmin={false} user={user} token={token} userDetails={propMetadata} userMetadata={userMetadata} picture={picture}/>
   else return <FullScreenLoader text="Fetching Data..."/>
