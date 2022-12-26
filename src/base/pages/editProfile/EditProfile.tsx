@@ -51,7 +51,7 @@ export default function EditProfile(props:EditProfileProps) {
                 })
                 .catch(err => {
                     console.log(err);
-                    if(err.response.status === 402){
+                    if(err.response.status === 405){
                         toast.error('Username already exists. Please select a different username');
                     }
                     else{

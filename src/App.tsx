@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProjectPage from './base/pages/project/ProjectPage';
 import { createContext } from 'react';
+import UserDetailsForm from './base/pages/editProfile/UserDetailsForm';
 
 const THEME = createTheme({
   typography: {
@@ -82,6 +83,7 @@ function App() {
               <Header picture={picture}/>
               <Routes>
                 <Route path="/" element={<MainPage picture={picture} updateMetaData={updateMetaData}/>} />
+                {/* enable for testing <Route path="/updateData" element={<UserDetailsForm updateMetadata={updateMetaData}/>}/>*/}
                 <Route path="/edit" element={<EditProfile picture={picture} updateMetaData={updateMetaData}/>}/>
                 <Route path="/projects" element={<ProjectPage/>}/>
               </Routes>

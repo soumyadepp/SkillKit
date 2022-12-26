@@ -65,7 +65,7 @@ export default function LandingPage() {
                 <TabContext value={featureValue}>
                     <Box sx={{borderBottom:1,my:2,borderColor:'divider'}}>
                         <TabList onChange={handleFeatureChange}>
-                            <Tab label="User Dashbaord" value="1"/>
+                            <Tab label="User Dashboard" value="1"/>
                             <Tab label="Projects List" value="2"/>
                             <Tab label="Project assignment" value="3"/>
                         </TabList>
