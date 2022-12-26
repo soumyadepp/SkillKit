@@ -54,7 +54,7 @@ export default function Userpage(props: UserPagePropType) {
                             <CommonPanel
                                 token={token}
                                 skills={userDetails?.skills || []}
-                                projects={projects}
+                                projects={userDetails?.assignedProjects || []}
                                 updateMetaData={props.updateMetaData} />
                         </Box>
                     </Container>
