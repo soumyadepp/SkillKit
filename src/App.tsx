@@ -83,7 +83,7 @@ function App() {
               <Header picture={picture}/>
               <Routes>
                 <Route path="/" element={<MainPage picture={picture} updateMetaData={updateMetaData}/>} />
-                {/* enable for testing <Route path="/updateData" element={<UserDetailsForm updateMetadata={updateMetaData}/>}/>*/}
+                <Route path="/updateData" element={<UserDetailsForm updateMetadata={updateMetaData}/>}/>
                 <Route path="/edit" element={<EditProfile picture={picture} updateMetaData={updateMetaData}/>}/>
                 <Route path="/projects" element={<ProjectPage/>}/>
               </Routes>

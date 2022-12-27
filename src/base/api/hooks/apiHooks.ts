@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
 interface Data {
-  data:any;
-  message:string;
+  data: any;
+  message: string;
 }
 
 interface Props {
@@ -11,7 +11,8 @@ interface Props {
   body?: string;
 }
 
-export default function useFetch({ url, method, body }: Props): { data: Data | null, error: Error | null, loading: boolean } {
+export default function useFetch({ url, method, body }: Props): 
+{ data: Data | null, error: Error | null, loading: boolean } {
   const [data, setData] = useState<Data | null>(null);
   const [error, setError] = useState<any>(null);
   const [loading, setLoading] = useState(true);

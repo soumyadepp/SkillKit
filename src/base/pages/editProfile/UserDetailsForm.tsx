@@ -38,6 +38,11 @@ export default function UserDetailsForm(props: UserDetailsPropType) {
             })
                 .then((res) => {
                     console.log(res.data?.data);
+                    if(res.status === 402 || res.status === 401){
+                        if(res.status === 402) toast.error('Username has already been taken');
+                        else toast.error("Couldn't edit your data at this moment.");
+                        return;
+                    }
                     toast.success(res.data?.message);
                     setExpanded(false);
                     localStorage.removeItem('user_metadata');

@@ -7,8 +7,14 @@ export const options = [
     },
     {
       id:2,
-      name: 'React',
-      value:'react',
+      name: 'React.Js',
+      value:'reactjs',
+      image:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png'
+    },
+    {
+      id:16,
+      name: 'React.Ts',
+      value:'reactts',
       image:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png'
     },
     {
@@ -73,7 +79,13 @@ export const options = [
       id:14,
       name:"OracleDB",
       image:"https://m.media-amazon.com/images/I/41QodfboFdL.png"
-    }
+    },
+    {
+      id:15,
+      name: 'Node.JS',
+      value:'react',
+      image:'https://png.pngitem.com/pimgs/s/168-1680234_nodejs-logo-svg-hd-png-download.png'
+    },
   ]
 
 
@@ -103,7 +115,7 @@ export const options = [
   export const backend = [
     {
       name: "Node.Js",
-      image:"https://e7.pngegg.com/pngimages/832/921/png-clipart-computer-icons-ruby-programming-language-computer-programming-ruby-angle-rectangle.png"
+      image:"https://png.pngitem.com/pimgs/s/168-1680234_nodejs-logo-svg-hd-png-download.png"
     },
     {
       name:"Ruby on Rails",
