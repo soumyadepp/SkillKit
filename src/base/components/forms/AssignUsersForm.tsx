@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -13,35 +13,40 @@ import ComponentLoader from "../loaders/ComponentLoader";
 import { DeleteRounded, TaskAltOutlined, VerifiedUser } from "@mui/icons-material";
 import { User, Project, UserLocalType } from "../../types";
 import { Chip, Dialog, Divider, List, ListItem, ListItemIcon, ListItemText, MenuItem, Select, Tooltip } from "@mui/material";
+import { ProjectsContext } from "../../pages/homepage/AdminPage";
 const theme = createTheme();
 const baseApiURL = process.env.REACT_APP_BACKEND_URL;
 
 
+type AssignUsersFormProps = {
+    updateProjects : Function
+}
 
-export default function AssignUsersForm() {
+export default function AssignUsersForm(props : AssignUsersFormProps) {
     const { user } = useAuth0();
-    const [projects, setProjects] = useState<Project[]>([]);
+    // const [projects, setProjects] = useState<Project[]>([]);
     const [users, setUsers] = useState<any>();
     const [selectedUsers, setSelectedUsers] = useState<UserLocalType[]>([]);
     const [project, setProject] = useState<Project>();
     const [isLoading, setIsLoading] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
+    const projects = useContext(ProjectsContext);
     const handleSelect = (selectedList: any, selectedItem: any) => {
         setSelectedUsers(selectedList);
     }
     const handleRemove = (selectedList: any, selectedItem: any) => {
         setSelectedUsers(selectedList);
     }
-    const fetchProjects = () => {
-        axios.get(`${baseApiURL}/projects`)
-            .then((res) => {
-                setProjects(res.data?.data);
-            })
-            .catch(err => {
-                console.log(err);
-                toast.error(err.message);
-            })
-    }
+    // const fetchProjects = () => {
+    //     axios.get(`${baseApiURL}/projects`)
+    //         .then((res) => {
+    //             setProjects(res.data?.data);
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //             toast.error(err.message);
+    //         })
+    // }
     const fetchUsers = () => {
         axios.get(`${baseApiURL}/users`)
             .then((res) => {
@@ -55,7 +60,7 @@ export default function AssignUsersForm() {
     }
     useEffect(() => {
         setIsLoading(true);
-        fetchProjects();
+        // fetchProjects();
         fetchUsers();
         setIsLoading(false);
     }, [user]);
@@ -71,7 +76,7 @@ export default function AssignUsersForm() {
     }, [project])
 
     const handleChange = (e: any) => {
-        setProject(projects.find(x => x.name === e.target.value));
+        setProject(projects?.find(x => x.name === e.target.value));
     }
 
     const handleUnassign = (e: React.SyntheticEvent, project: Project, userToUnassign: string) => {
@@ -81,9 +86,10 @@ export default function AssignUsersForm() {
             .then((res) => {
                 console.log(res.data?.data);
                 toast.success(res.data?.message);
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1500)
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 1500)
+                props.updateProjects();
             })
             .catch((err) => {
                 console.log(err.message);
@@ -99,9 +105,10 @@ export default function AssignUsersForm() {
             .then((res) => {
                 console.log(res.data);
                 toast.success('Updated successfully');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1500);
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 1500);
+                props.updateProjects();
             })
             .catch(err => {
                 console.log(err);

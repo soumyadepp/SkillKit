@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -15,9 +15,11 @@ import toast from 'react-hot-toast';
 import Edit from '@mui/icons-material/Edit';
 import UserList from '../lists/UserList';
 import { colorMap, statusOptions } from '../../utils/common_data';
+import { ProjectsContext } from '../../pages/homepage/AdminPage';
 
 type AdminPanelPropType = {
   token: string;
+  updateProjects : Function;
 }
 
 
@@ -27,11 +29,12 @@ const baseApiURL = process.env.REACT_APP_BACKEND_URL;
 
 export default function AdminPanel(props: AdminPanelPropType) {
   const [value, setValue] = React.useState('1');
-  const [projects, setProjects] = useState<Project[]>([]);
+  // const [projects, setProjects] = useState<Project[]>([]);
   const [status, setStatus] = useState<String>();
   const [projectId,setProjectId] = useState("");
   const [expanded, setExpanded] = useState<string | false>(false);
   const [subExpanded,setSubExpanded] = useState<string | false>(false);
+  const projects = useContext(ProjectsContext);
   const handleExpandedChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -52,26 +55,26 @@ export default function AdminPanel(props: AdminPanelPropType) {
       status: status
     })
     .then((res) => {
-      fetchProjects();
+      props.updateProjects();
     })
     .catch(err => console.log(err)); 
   }
 
-  function fetchProjects(){
-    axios.get(`${baseApiURL}/projects`)
-    .then((res) => {
-      setProjects(res.data?.data);
-      console.log(status);
-    })
-    .catch(err => {
-      console.log(err);
-      toast.error(err.message);
-    })
-  }
+  // function fetchProjects(){
+  //   axios.get(`${baseApiURL}/projects`)
+  //   .then((res) => {
+  //     setProjects(res.data?.data);
+  //     console.log(status);
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //     toast.error(err.message);
+  //   })
+  // }
 
-  useEffect(() => {
-    fetchProjects();
-  }, []);
+  // useEffect(() => {
+  //   // fetchProjects();
+  // }, []);
 
   return (
     <Box sx={{ mt: 2, width: '100%', typography: 'body1', boxShadow: '0px 0px 4px lightgray' }}>
@@ -94,7 +97,7 @@ export default function AdminPanel(props: AdminPanelPropType) {
               <Typography fontSize={16} fontWeight={500}>Create New</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <ProjectsForm />
+              <ProjectsForm updateProjects={props.updateProjects}/>
             </AccordionDetails>
           </Accordion>
           <Accordion expanded={expanded === 'assign-users'} onChange={handleExpandedChange('assign-users')}>
@@ -104,7 +107,7 @@ export default function AdminPanel(props: AdminPanelPropType) {
               <Typography fontSize={16} fontWeight={500}>Assign Users</Typography>
             </AccordionSummary>
             <AccordionDetails >
-              <AssignUsersForm />
+              <AssignUsersForm updateProjects={props.updateProjects}/>
             </AccordionDetails>
           </Accordion>
           <Accordion expanded={expanded === 'status-panel'} onChange={handleExpandedChange('status-panel')}>

@@ -13,6 +13,7 @@ const theme = createTheme();
 
 type ProjectsFormPropType = {
     project?: Project;
+    updateProjects : Function
 }
 
 export default function ProjectsForm(props: ProjectsFormPropType) {
@@ -67,14 +68,27 @@ export default function ProjectsForm(props: ProjectsFormPropType) {
             .then(res => {
                 console.log(res.data.message);
                 toast.success('Project Added');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 1000);
+                props.updateProjects();
+                clearForm();
             })
             .catch(err => {
                 console.log(err);
                 toast.error(err.message);
             })
+    }
+
+    function clearForm()
+    {
+        setProjectName('');
+        setProjectDescription('');
+        setVersion('');
+        setDeadline('');
+        setBackendSelected([]);
+        setFid("");
+        setDatabasesSelected([]);
     }
     return (
         <ThemeProvider theme={theme}>
